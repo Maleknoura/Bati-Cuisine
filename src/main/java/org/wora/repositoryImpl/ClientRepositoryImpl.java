@@ -33,18 +33,26 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
 
-    public boolean clientExistsByName(String name) {
+    public Client clientExistsByName(String name) {
         String query = "SELECT * FROM client WHERE name = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, name);
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String clientName = rs.getString("name");
+                    String address = rs.getString("address");
+                    String phoneNumber = rs.getString("phoneNumber");
+
+                    return new Client();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
+
 
     public Client getClientById(int id) {
         String query = "SELECT * FROM client WHERE id = ?";

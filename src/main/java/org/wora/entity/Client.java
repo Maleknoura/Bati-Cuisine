@@ -5,7 +5,7 @@ import java.util.List;
 public class Client {
     private int id;
     private String name;
-    private String adress;
+    private String address;
     private String numberPhone;
     private boolean isProfessionel;
     private List<Project> projects;
@@ -16,7 +16,7 @@ public class Client {
     public Client (int id, String name ,String adress,String numberPhone ,boolean isProfessionel){
        this.id=id;
        this.name=name;
-       this.adress=adress;
+       this.address=adress;
        this.numberPhone=numberPhone;
        this.isProfessionel=isProfessionel;
     }
@@ -26,7 +26,7 @@ public class Client {
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
     public String getName() {
@@ -49,8 +49,12 @@ public class Client {
         return numberPhone;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAdress(String adress) {
-        this.adress = adress;
+        this.address = adress;
     }
 
     public void setNumberPhone(String numberPhone) {
