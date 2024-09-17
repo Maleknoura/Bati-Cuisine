@@ -1,4 +1,4 @@
-package org.wora.Enum;
+package org.wora.entity.Enum;
 
 public enum Status {
     INPROGRESS ,COMPLETED,CANCELLED

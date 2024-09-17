@@ -1,4 +1,4 @@
-package org.wora.Entity;
+package org.wora.entity;
 
 public class Labor extends Component {
     private double hourlyRate;

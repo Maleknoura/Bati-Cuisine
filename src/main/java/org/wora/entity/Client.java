@@ -1,4 +1,4 @@
-package org.wora.Entity;
+package org.wora.entity;
 
 import java.util.List;
 

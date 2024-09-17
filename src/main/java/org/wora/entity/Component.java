@@ -1,4 +1,4 @@
-package org.wora.Entity;
+package org.wora.entity;
 
 public abstract class Component {
     private int id;

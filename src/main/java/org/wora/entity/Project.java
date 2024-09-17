@@ -1,6 +1,6 @@
-package org.wora.Entity;
+package org.wora.entity;
 
-import org.wora.Enum.Status;
+import org.wora.entity.Enum.Status;
 
 import java.util.List;
 

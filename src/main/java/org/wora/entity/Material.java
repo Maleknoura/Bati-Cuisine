@@ -1,4 +1,4 @@
-package org.wora.Entity;
+package org.wora.entity;
 
 public class Material extends Component{
     private double transportCost;

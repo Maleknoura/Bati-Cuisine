@@ -1,4 +1,4 @@
-package org.wora.Repository;
+package org.wora.repository;
 
 public interface QuoteRepository {
 }
