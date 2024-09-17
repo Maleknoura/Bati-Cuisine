@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ClientRepositoryImpl implements ClientRepository {
 
@@ -17,34 +18,44 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
     @Override
     public void addClient(Client client) {
-        String query = "INSERT INTO clients (id, name, adress, numberPhone, isProfessionel) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO client (id, name, adress, numberPhone, isProfessionel) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, client.getId());
             stmt.setString(2, client.getName());
             stmt.setString(3, client.getAdress());
             stmt.setString(4, client.getNumberPhone());
             stmt.setBoolean(5, client.getIsProfessionel());
+            System.out.println("Executing query: " + stmt.toString());
             stmt.executeUpdate();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean clientExistsByName(String name) {
-        String query = "SELECT * FROM clients WHERE name = ?";
+
+    public Client clientExistsByName(String name) {
+        String query = "SELECT * FROM client WHERE name = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, name);
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String clientName = rs.getString("name");
+                    String address = rs.getString("address");
+                    String phoneNumber = rs.getString("phoneNumber");
+
+                    return new Client();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
+
     public Client getClientById(int id) {
-        String query = "SELECT * FROM clients WHERE id = ?";
+        String query = "SELECT * FROM client WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -64,7 +75,10 @@ public class ClientRepositoryImpl implements ClientRepository {
         return null;
     }
 
-
+    @Override
+    public List<Client> findAll() {
+        return List.of();
+    }
 
 
 }

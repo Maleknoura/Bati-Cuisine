@@ -1,76 +1,36 @@
 package org.wora.repositoryImpl;
 
-import org.wora.entity.Enum.Status;
 import org.wora.entity.Project;
-import org.wora.repository.ProjectRepository;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-public class ProjectRepositoryImpl implements ProjectRepository
-{
+public class ProjectRepositoryImpl implements org.wora.repository.ProjectRepository {
     private Connection connection;
-
 
     public ProjectRepositoryImpl(Connection connection) {
         this.connection = connection;
     }
     @Override
-    public void createProject(Project project) {
-
-    }
-
-    @Override
-    public Optional<Project> getProjectById(int projectId) {
-        return Optional.empty();
-    }
-
-
-    @Override
-    public List<Project> getAllProjects() {
-        List<Project> projects = new ArrayList<>();
-        String query = "SELECT * FROM projects";
-
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-
-            while (resultSet.next()) {
-                Project project = mapProject(resultSet);
-                projects.add(project);
-            }
-
+    public void save(Project project) {
+        String status = project.getStatus().toString().toUpperCase();
+        String query = "INSERT INTO Project (name, profitMargin, totalCost, status, quoteId, clientId) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, project.getName());
+            stmt.setDouble(2, project.getProfitMargin());
+            stmt.setDouble(3, project.getTotalCost());
+            stmt.setObject(4, project.getStatus().toString(), java.sql.Types.OTHER);
+            stmt.setObject(5, project.getQuote() != null ? project.getQuote().getId() : null);
+            stmt.setObject(6, project.getClient() != null ? project.getClient().getId() : null);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return projects;
-    }
-
-
-
-    private Project mapProject(ResultSet resultSet) throws SQLException {
-        Project project = new Project();
-        project.setId(resultSet.getInt("id"));
-        project.setName(resultSet.getString("name"));
-        project.setProfitMargin(resultSet.getDouble("profitMargin"));
-        project.setTotalCost(resultSet.getDouble("totalCost"));
-        project.setStatus(Status.valueOf(resultSet.getString("status")));
-        return project;
-    }
-    @Override
-    public void updateProject(Project project) {
-
     }
 
     @Override
-    public void deleteProject(int projectId) {
-
+    public Project findById(int id) {
+        return null;
     }
 }
-
-
