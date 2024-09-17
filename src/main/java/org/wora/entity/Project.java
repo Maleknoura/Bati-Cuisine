@@ -85,5 +85,9 @@ public class Project {
     public void setComponents(List<Component> components) {
         this.components = components;
     }
+    public void ajouterComposant(Component component) {
+        components.add(component);
+    }
+
 
 }

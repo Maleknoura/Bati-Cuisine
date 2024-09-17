@@ -18,7 +18,7 @@ public abstract class Component {
         this.taxRate = taxRate;
     }
 
-    // Getters and Setters
+
     public String getName() {
         return name;
     }
@@ -65,5 +65,6 @@ public abstract class Component {
     public void setProject(Project project) {
         this.project = project;
     }
+    public abstract double getCost();
 }
 
