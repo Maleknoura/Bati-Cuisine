@@ -11,6 +11,7 @@ public class Quote {
     private boolean isAccepted;
     private Project project;
 
+    public Quote(){}
     public Quote(int id,double estimatedAmount, LocalDate issueDate , LocalDate validityDate, boolean isAccepted ){
         this.id=id;
         this.estimatedAmount=estimatedAmount;

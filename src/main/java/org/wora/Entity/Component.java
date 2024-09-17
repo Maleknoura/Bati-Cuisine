@@ -9,6 +9,7 @@ public abstract class Component {
     private double taxRate;
     private Project project;
 
+    public Component(){}
     public Component(String name, double unitCost, double quantity, String componentType, double taxRate) {
         this.name = name;
         this.unitCost = unitCost;

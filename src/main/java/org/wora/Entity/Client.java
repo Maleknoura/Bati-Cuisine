@@ -10,6 +10,9 @@ public class Client {
     private boolean isProfessionel;
     private List<Project> projects;
 
+    public Client(){
+    }
+
     public Client (int id, String name ,String adress,String numberPhone ,boolean isProfessionel){
        this.id=id;
        this.name=name;

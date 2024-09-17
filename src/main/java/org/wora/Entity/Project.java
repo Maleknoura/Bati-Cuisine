@@ -14,6 +14,7 @@ public class Project {
     private Client client;
     private List<Component> components;
 
+    public Project(){}
     public Project(int id,String name,double profitMargin,double totalCost,Status status){
         this.id=id;
         this.name=name;
