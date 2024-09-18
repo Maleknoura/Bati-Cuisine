@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class ClientRepositoryImpl implements ClientRepository {
 
@@ -18,22 +19,29 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
     @Override
     public void addClient(Client client) {
-        String query = "INSERT INTO client (id, name, adress, numberPhone, isProfessionel) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, client.getId());
-            stmt.setString(2, client.getName());
-            stmt.setString(3, client.getAdress());
-            stmt.setString(4, client.getNumberPhone());
-            stmt.setBoolean(5, client.getIsProfessionel());
+        String query = "INSERT INTO client (name, address, numberPhone, isProfessionel) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, client.getName());
+            stmt.setString(2, client.getAdress());
+            stmt.setString(3, client.getNumberPhone());
+            stmt.setBoolean(4, client.getIsProfessionel());
             System.out.println("Executing query: " + stmt.toString());
             stmt.executeUpdate();
+
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    client.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
-    public Client clientExistsByName(String name) {
+    @Override
+    public Optional<Client> findClientByName(String name) {
         String query = "SELECT * FROM client WHERE name = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, name);
@@ -43,15 +51,27 @@ public class ClientRepositoryImpl implements ClientRepository {
                     String clientName = rs.getString("name");
                     String address = rs.getString("address");
                     String phoneNumber = rs.getString("phoneNumber");
+                    boolean isProfessional = rs.getBoolean("isProfessionel");
 
-                    return new Client();
+
+                    Client client = new Client();
+                    client.setId(id);
+                    client.setName(clientName);
+                    client.setAdress(address);
+                    client.setNumberPhone(phoneNumber);
+                    client.setProfessionel(isProfessional);
+
+                    return Optional.of(client);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return Optional.empty();
     }
+
+
 
 
     public Client getClientById(int id) {

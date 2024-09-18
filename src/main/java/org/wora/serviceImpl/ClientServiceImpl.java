@@ -4,6 +4,8 @@ import org.wora.entity.Client;
 import org.wora.repository.ClientRepository;
 import org.wora.service.ClientService;
 
+import java.util.Optional;
+
 public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
@@ -19,9 +21,13 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public boolean clientExistsByName(String name) {
-        return clientRepository.clientExistsByName(name);
+
+    public Client clientExistsByName(String name) {
+        Optional<Client> optionalClient = clientRepository.findClientByName(name);
+        return optionalClient.orElse(null);
     }
+
+
 
     @Override
     public Client getClientById(int id) {

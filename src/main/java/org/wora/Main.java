@@ -9,6 +9,8 @@ import org.wora.repositoryImpl.ClientRepositoryImpl;
 import org.wora.repositoryImpl.ProjectRepositoryImpl;
 import org.wora.repositoryImpl.QuoteRepositoryImpl;
 
+import org.wora.service.ProjectService;
+import org.wora.serviceImpl.ProjectServiceImpl;
 import org.wora.ui.ConsoleUi;
 
 import java.sql.Connection;
@@ -29,7 +31,11 @@ public class Main {
         ClientRepository clientRepository = new ClientRepositoryImpl(connection);
 
 
-        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectRepository, quoteRepository, clientRepository);
+
+        ProjectService projectService = new ProjectServiceImpl(projectRepository);
+
+
+        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository);
 
 
         projectCreationUI.createProject();

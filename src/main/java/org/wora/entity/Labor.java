@@ -31,6 +31,7 @@ public class Labor extends Component {
         return workHours;
     }
 
+
     public void setWorkHours(double workHours) {
         this.workHours = workHours;
     }

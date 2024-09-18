@@ -6,7 +6,7 @@ public interface ClientService {
 
     void addClient(Client client);
 
-    boolean clientExistsByName(String name);
+    Client clientExistsByName(String name);
 
     Client getClientById(int id);
 }

@@ -2,6 +2,7 @@ package org.wora.entity;
 
 import org.wora.entity.Enum.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
@@ -14,13 +15,15 @@ public class Project {
     private Client client;
     private List<Component> components;
 
-    public Project(){}
-    public Project(int id,String name,double profitMargin,double totalCost,Status status){
+    public Project(){ components = new ArrayList<>();}
+    public Project(int id,String name,double profitMargin,double totalCost,Status status,Component component){
         this.id=id;
         this.name=name;
         this.profitMargin=profitMargin;
         this.totalCost=totalCost;
         this.status=status;
+        this.components = new ArrayList<>();
+        this.components.add(component);
     }
     public int getId() {
         return id;
@@ -85,7 +88,7 @@ public class Project {
     public void setComponents(List<Component> components) {
         this.components = components;
     }
-    public void ajouterComposant(Component component) {
+    public void add(Component component) {
         components.add(component);
     }
 

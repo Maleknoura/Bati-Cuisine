@@ -1,6 +1,5 @@
 package org.wora.repositoryImpl;
 
-import org.wora.entity.Component;
 import org.wora.entity.Labor;
 import org.wora.repository.ComponentRepository;
 
