@@ -1,16 +1,13 @@
 package org.wora.entity;
 
 import org.wora.entity.Enum.Status;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Project {
     private int id;
     private String name;
     private double profitMargin;
-    private double totalCost;
     private Status status;
     private Quote quote;
     private Client client;
@@ -20,16 +17,14 @@ public class Project {
         components = new ArrayList<>();
     }
 
-    public Project(int id, String name, double profitMargin, double totalCost, Status status, Component component) {
+    public Project(int id, String name, double profitMargin, Status status, Component component) {
         this.id = id;
         this.name = name;
         this.profitMargin = profitMargin;
-        this.totalCost = totalCost;
         this.status = status;
         this.components = new ArrayList<>();
         this.components.add(component);
     }
-
 
     public int getId() {
         return id;
@@ -53,14 +48,6 @@ public class Project {
 
     public void setProfitMargin(double profitMargin) {
         this.profitMargin = profitMargin;
-    }
-
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
     }
 
     public Status getStatus() {
@@ -97,30 +84,5 @@ public class Project {
 
     public void add(Component component) {
         components.add(component);
-    }
-
-
-
-    public double getTotalMaterialCost() {
-        return components.stream()
-                .filter(c -> c instanceof Material)
-                .mapToDouble(c -> ((Material) c).getCost())
-                .sum();
-    }
-
-    public double getTotalLaborCost() {
-        return components.stream()
-                .filter(c -> c instanceof Labor)
-                .mapToDouble(c -> ((Labor) c).getCost())
-                .sum();
-    }
-
-    public double getTotalCostProject() {
-        return getTotalMaterialCost() + getTotalLaborCost();
-    }
-
-    public double costWithProfitMargin() {
-        double totalCost = getTotalCostProject();
-        return totalCost * (1 + profitMargin);
     }
 }
