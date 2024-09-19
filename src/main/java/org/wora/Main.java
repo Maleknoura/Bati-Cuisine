@@ -2,12 +2,13 @@ package org.wora;
 
 
 import org.wora.Database.DatabaseConnection;
+import org.wora.entity.Labor;
+import org.wora.entity.Material;
 import org.wora.repository.ClientRepository;
+import org.wora.repository.ComponentRepository;
 import org.wora.repository.ProjectRepository;
 import org.wora.repository.QuoteRepository;
-import org.wora.repositoryImpl.ClientRepositoryImpl;
-import org.wora.repositoryImpl.ProjectRepositoryImpl;
-import org.wora.repositoryImpl.QuoteRepositoryImpl;
+import org.wora.repositoryImpl.*;
 
 import org.wora.service.ProjectService;
 import org.wora.serviceImpl.ProjectServiceImpl;
@@ -27,15 +28,17 @@ public class Main {
             System.out.println("Échec de la connexion ");
         }
         ProjectRepository projectRepository = new ProjectRepositoryImpl(connection);
-        QuoteRepository quoteRepository = new QuoteRepositoryImpl(connection);
         ClientRepository clientRepository = new ClientRepositoryImpl(connection);
 
+
+        ComponentRepository<Labor> laborRepository = new LaborRepositoryImpl(connection);
+        ComponentRepository<Material> materialRepository = new MaterialRepositoryImpl(connection);
 
 
         ProjectService projectService = new ProjectServiceImpl(projectRepository);
 
 
-        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository);
+        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository, laborRepository, materialRepository);
 
 
         projectCreationUI.createProject();

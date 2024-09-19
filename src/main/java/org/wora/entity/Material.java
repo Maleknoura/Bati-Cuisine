@@ -1,8 +1,8 @@
 package org.wora.entity;
 
 public class Material extends Component{
-    private double transportCost;
-    private double qualityCoefficient;
+        private double transportCost;
+        private double qualityCoefficient;
 
     public Material(){}
 
@@ -24,7 +24,7 @@ public class Material extends Component{
         this.transportCost = transportCost;
     }
 
-    public double getQualityCoefficient(double qualityFactor) {
+    public double getQualityCoefficient() {
         return qualityCoefficient;
     }
 

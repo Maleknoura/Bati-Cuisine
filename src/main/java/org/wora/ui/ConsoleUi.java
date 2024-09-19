@@ -3,10 +3,8 @@ package org.wora.ui;
 import org.wora.entity.*;
 import org.wora.entity.Enum.Status;
 import org.wora.repository.ClientRepository;
-import org.wora.repository.ProjectRepository;
-import org.wora.repository.QuoteRepository;
+import org.wora.repository.ComponentRepository;
 import org.wora.service.ProjectService;
-import org.wora.serviceImpl.ProjectServiceImpl;
 
 import java.sql.Connection;
 import java.util.Optional;
@@ -16,11 +14,15 @@ public class ConsoleUi {
     private Connection connection;
     private ProjectService projectService;
     private ClientRepository clientRepository;
+    private ComponentRepository<Labor> laborRepository;
+    private ComponentRepository<Material> materialRepository;
 
-    public ConsoleUi(Connection connection, ProjectService projectService, ClientRepository clientRepository) {
+    public ConsoleUi(Connection connection, ProjectService projectService, ClientRepository clientRepository, ComponentRepository<Labor> laborRepository, ComponentRepository<Material> materialRepository) {
         this.connection = connection;
         this.projectService = projectService;
         this.clientRepository = clientRepository;
+        this.laborRepository = laborRepository;
+        this.materialRepository = materialRepository;
     }
 
     public void createProject() {
@@ -28,6 +30,41 @@ public class ConsoleUi {
 
         System.out.println("------- Création d'un Nouveau Projet -----");
 
+
+        Client client = handleClientSelection(scanner);
+
+        if (client == null) {
+            System.out.println("Échec de la sélection du client.");
+            return;
+        }
+
+
+        Project project = new Project();
+        System.out.println("--- Création du Projet ---");
+
+        System.out.print("Nom du projet : ");
+        project.setName(scanner.nextLine());
+
+
+
+        System.out.print("Statut du projet (EN_COURS/TERMINE/ANNULE) : ");
+        project.setStatus(Status.valueOf(scanner.nextLine().toUpperCase()));
+
+
+        project.setClient(client);
+
+
+        projectService.createProject(project);
+        System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
+
+
+        addLabor(scanner, project);
+        addMaterial(scanner, project);
+
+        System.out.println("Le projet et toutes ses ressources ont été créés avec succès.");
+    }
+
+    private Client handleClientSelection(Scanner scanner) {
         System.out.println("--- Recherche de client ---");
         System.out.println("Souhaitez-vous chercher un client existant ou en ajouter un nouveau ?");
         System.out.println("1. Chercher un client existant");
@@ -36,140 +73,142 @@ public class ConsoleUi {
         int option = scanner.nextInt();
         scanner.nextLine();
 
-        Client client = null;
-
         if (option == 1) {
-            System.out.print("Entrez le nom du client : ");
-            String clientName = scanner.nextLine();
-            Optional<Client> clientOpt = clientRepository.findClientByName(clientName);
+            return findExistingClient(scanner);
+        } else if (option == 2) {
+            return createNewClient(scanner);
+        }
+        return null;
+    }
 
-            if (clientOpt.isEmpty()) {
-                System.out.println("Client non trouvé.");
-                return;
-            }
+    private Client findExistingClient(Scanner scanner) {
+        System.out.print("Entrez le nom du client : ");
+        String clientName = scanner.nextLine();
+        Optional<Client> clientOpt = clientRepository.findClientByName(clientName);
 
-            client = clientOpt.get();
-            System.out.println("Client trouvé !");
+        if (clientOpt.isPresent()) {
+            Client client = clientOpt.get();
+            System.out.println("Client trouvé :");
             System.out.println("Nom: " + client.getName());
             System.out.println("Adresse : " + client.getAdress());
             System.out.println("Numéro de téléphone : " + client.getNumberPhone());
 
             System.out.print("Souhaitez-vous continuer avec ce client ? (y/n) : ");
             String choice = scanner.nextLine();
-            if (!choice.equalsIgnoreCase("y")) {
-                return;
+            if (choice.equalsIgnoreCase("y")) {
+                return client;
             }
-        } else if (option == 2) {
-            System.out.print("Entrez le nom du client : ");
-            String name = scanner.nextLine();
-            System.out.print("Entrez l'adresse du client : ");
-            String address = scanner.nextLine();
-            System.out.print("Entrez le numéro de téléphone du client : ");
-            String phoneNumber = scanner.nextLine();
-            System.out.print("Le client est-il un professionnel ? (oui/non) : ");
-            String isProfessionnelInput = scanner.nextLine();
-            boolean isProfessionnel = isProfessionnelInput.equalsIgnoreCase("oui");
-
-            client = new Client();
-            client.setName(name);
-            client.setAdress(address);
-            client.setNumberPhone(phoneNumber);
-            client.setProfessionel(isProfessionnel);
-
-            clientRepository.addClient(client);
+        } else {
+            System.out.println("Client non trouvé.");
         }
+        return null;
+    }
 
-        System.out.print("Entrez le nom du projet : ");
-        String projectName = scanner.nextLine();
+    private Client createNewClient(Scanner scanner) {
+        System.out.println("--- Ajout d'un nouveau client ---");
 
-        System.out.println("Sélectionnez le statut du projet : ");
-        System.out.println("1. En cours");
-        System.out.println("2. Terminé");
-        System.out.println("3. Annulé");
+        System.out.print("Nom du client : ");
+        String name = scanner.nextLine();
+        System.out.print("Adresse du client : ");
+        String address = scanner.nextLine();
+        System.out.print("Numéro de téléphone : ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("Le client est-il un professionnel ? (oui/non) : ");
+        String isProfessionnelInput = scanner.nextLine();
+        boolean isProfessionnel = isProfessionnelInput.equalsIgnoreCase("oui");
 
-        int statusOption = scanner.nextInt();
-        scanner.nextLine();
+        Client client = new Client();
+        client.setName(name);
+        client.setAdress(address);
+        client.setNumberPhone(phoneNumber);
+        client.setProfessionel(isProfessionnel);
 
-        Status status;
-        switch (statusOption) {
-            case 1:
-                status = Status.IN_PROGRESS;
-                break;
-            case 2:
-                status = Status.COMPLETED;
-                break;
-            case 3:
-                status = Status.CANCELLED;
-                break;
-            default:
-                System.out.println("Option non valide, le statut sera défini à 'En cours' par défaut.");
-                status = Status.IN_PROGRESS;
-                break;
-        }
+        clientRepository.addClient(client);
+        return client;
+    }
 
-        Project project = new Project();
-        project.setName(projectName);
-        project.setClient(client);
-        project.setStatus(status);
-
-        System.out.println("--- Ajout des matériaux ---");
+    private void addLabor(Scanner scanner, Project project) {
         while (true) {
-            System.out.print("Entrez le nom du matériau : ");
-            String materialName = scanner.nextLine();
-            System.out.print("Entrez la quantité de ce matériau (en m² ou litres) : ");
-            double quantity = scanner.nextDouble();
-            System.out.print("Entrez le coût unitaire de ce matériau (€/m² ou €/litre) : ");
-            double unitCost = scanner.nextDouble();
-            System.out.print("Entrez le coût de transport de ce matériau (€) : ");
-            double transportCost = scanner.nextDouble();
-            System.out.print("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité) : ");
-            double qualityFactor = scanner.nextDouble();
-            scanner.nextLine();
+            System.out.println("Voulez-vous ajouter de la main-d'œuvre au projet ? (oui/non)");
+            String response = scanner.nextLine();
+            if (response.equalsIgnoreCase("oui")) {
+                Labor labor = new Labor();
 
-            Material material = new Material();
-            material.setName(materialName);
-            material.setQuantity(quantity);
-            material.setUnitCost(unitCost);
-            material.setTransportCost(transportCost);
-            material.setQualityCoefficient(qualityFactor);
 
-            project.add(material);
+                System.out.print("Nom de la main-d'œuvre : ");
+                labor.setName(scanner.nextLine());
 
-            System.out.print("Voulez-vous ajouter un autre matériau ? (y/n) : ");
-            String continueAdding = scanner.nextLine();
-            if (!continueAdding.equalsIgnoreCase("y")) {
+                System.out.print("Coût unitaire : ");
+                labor.setUnitCost(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Quantité : ");
+                labor.setQuantity(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Type de composant : ");
+                labor.setComponentType(scanner.nextLine());
+
+                System.out.print("Taux de taxe : ");
+                labor.setTaxRate(Double.parseDouble(scanner.nextLine()));
+
+
+                System.out.print("Taux horaire : ");
+                labor.setHourlyRate(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Heures de travail : ");
+                labor.setWorkHours(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Productivité des travailleurs : ");
+                labor.setWorkerProductivity(Double.parseDouble(scanner.nextLine()));
+
+                labor.setProject(project);
+
+                laborRepository.add(labor, project.getId());
+
+                System.out.println("Main-d'œuvre ajoutée au projet.");
+            } else {
                 break;
             }
         }
+    }
 
-        System.out.println("--- Ajout de la main-d'œuvre ---");
+
+
+    private void addMaterial(Scanner scanner, Project project) {
         while (true) {
-            System.out.print("Entrez le type de main-d'œuvre (e.g., Ouvrier de base, Spécialiste) : ");
-            String laborType = scanner.nextLine();
-            System.out.print("Entrez le taux horaire de cette main-d'œuvre (€/h) : ");
-            double hourlyRate = scanner.nextDouble();
-            System.out.print("Entrez le nombre d'heures travaillées : ");
-            double workHours = scanner.nextDouble();
-            System.out.print("Entrez le facteur de productivité (1.0 = standard, > 1.0 = haute productivité) : ");
-            double productivityFactor = scanner.nextDouble();
-            scanner.nextLine();
+            System.out.println("Voulez-vous ajouter du matériel au projet ? (oui/non)");
+            String response = scanner.nextLine();
+            if (response.equalsIgnoreCase("oui")) {
+                Material material = new Material();
 
-            Labor labor = new Labor();
-            labor.setComponentType(laborType);
-            labor.setHourlyRate(hourlyRate);
-            labor.setWorkHours(workHours);
-            labor.setWorkerProductivity(productivityFactor);
+                System.out.print("Nom du matériel : ");
+                material.setName(scanner.nextLine());
 
-            project.add(labor);
+                System.out.print("Coût unitaire : ");
+                material.setUnitCost(Double.parseDouble(scanner.nextLine()));
 
-            System.out.print("Voulez-vous ajouter un autre type de main-d'œuvre ? (y/n) : ");
-            String continueAdding = scanner.nextLine();
-            if (!continueAdding.equalsIgnoreCase("y")) {
+                System.out.print("Quantité : ");
+                material.setQuantity(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Type de composant : ");
+                material.setComponentType(scanner.nextLine());
+
+                System.out.print("Taux de taxe : ");
+                material.setTaxRate(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Coût de transport : ");
+                material.setTransportCost(Double.parseDouble(scanner.nextLine()));
+
+                System.out.print("Coefficient de qualité : ");
+                material.setQualityCoefficient(Double.parseDouble(scanner.nextLine()));
+
+                material.setProject(project);
+
+                materialRepository.add(material, project.getId());
+                System.out.println("Matériel ajouté au projet.");
+            } else {
                 break;
             }
         }
-
-        projectService.createProject(project);
-        System.out.println("Projet créé avec succès !");
     }
 }
+

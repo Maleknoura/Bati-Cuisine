@@ -6,16 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="b19320f0-e52d-4827-8df9-ace9f0019ca7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Database/Script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Database/Script.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Labor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Labor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Project.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ClientRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ClientRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ClientRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ProjectRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ProjectRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ClientServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,19 +56,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Client",
-    "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

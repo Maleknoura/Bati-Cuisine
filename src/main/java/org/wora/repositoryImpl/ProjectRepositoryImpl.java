@@ -1,5 +1,7 @@
 package org.wora.repositoryImpl;
 
+import org.wora.entity.Component;
+import org.wora.entity.Labor;
 import org.wora.entity.Project;
 import org.wora.repository.ProjectRepository;
 
@@ -20,20 +22,25 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public void createProject(Project project) {
-        String query = "INSERT INTO Project (name, profitMargin, totalCost, status, quoteId, clientId) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+        String projectQuery = "INSERT INTO Project (name, status, quoteId, clientId) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(projectQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, project.getName());
-            stmt.setDouble(2, project.getProfitMargin());
-            stmt.setDouble(3, project.getTotalCost());
-            stmt.setObject(4, project.getStatus().toString(), java.sql.Types.OTHER);
-            stmt.setObject(5, project.getQuote() != null ? project.getQuote().getId() : null);
-            stmt.setObject(6, project.getClient() != null ? project.getClient().getId() : null);
+            stmt.setObject(2, project.getStatus().toString(), java.sql.Types.OTHER);
+            stmt.setObject(3, project.getQuote() != null ? project.getQuote().getId() : null);
+            stmt.setObject(4, project.getClient() != null ? project.getClient().getId() : null);
             stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    project.setId(generatedKeys.getInt(1));
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public Optional<Project> getProjectById(int projectId) {
         return Optional.empty();
