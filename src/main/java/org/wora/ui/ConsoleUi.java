@@ -1,6 +1,9 @@
 package org.wora.ui;
 
-import org.wora.entity.*;
+import org.wora.entity.Client;
+import org.wora.entity.Labor;
+import org.wora.entity.Material;
+import org.wora.entity.Project;
 import org.wora.entity.Enum.Status;
 import org.wora.repository.ClientRepository;
 import org.wora.repository.ComponentRepository;
@@ -30,7 +33,6 @@ public class ConsoleUi {
 
         System.out.println("------- Création d'un Nouveau Projet -----");
 
-
         Client client = handleClientSelection(scanner);
 
         if (client == null) {
@@ -38,25 +40,19 @@ public class ConsoleUi {
             return;
         }
 
-
         Project project = new Project();
         System.out.println("--- Création du Projet ---");
 
         System.out.print("Nom du projet : ");
         project.setName(scanner.nextLine());
 
-
-
         System.out.print("Statut du projet (EN_COURS/TERMINE/ANNULE) : ");
         project.setStatus(Status.valueOf(scanner.nextLine().toUpperCase()));
 
-
         project.setClient(client);
-
 
         projectService.createProject(project);
         System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
-
 
         addLabor(scanner, project);
         addMaterial(scanner, project);
@@ -134,7 +130,6 @@ public class ConsoleUi {
             if (response.equalsIgnoreCase("oui")) {
                 Labor labor = new Labor();
 
-
                 System.out.print("Nom de la main-d'œuvre : ");
                 labor.setName(scanner.nextLine());
 
@@ -149,7 +144,6 @@ public class ConsoleUi {
 
                 System.out.print("Taux de taxe : ");
                 labor.setTaxRate(Double.parseDouble(scanner.nextLine()));
-
 
                 System.out.print("Taux horaire : ");
                 labor.setHourlyRate(Double.parseDouble(scanner.nextLine()));
@@ -170,8 +164,6 @@ public class ConsoleUi {
             }
         }
     }
-
-
 
     private void addMaterial(Scanner scanner, Project project) {
         while (true) {
@@ -211,4 +203,3 @@ public class ConsoleUi {
         }
     }
 }
-
