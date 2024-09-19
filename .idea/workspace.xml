@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b19320f0-e52d-4827-8df9-ace9f0019ca7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Component.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Labor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Labor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/entity/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/entity/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ClientServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" afterDir="false" />
-    </list>
+    <list default="true" id="b19320f0-e52d-4827-8df9-ace9f0019ca7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
