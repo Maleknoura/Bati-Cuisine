@@ -4,6 +4,7 @@ import org.wora.entity.Enum.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Project {
     private int id;
@@ -15,16 +16,21 @@ public class Project {
     private Client client;
     private List<Component> components;
 
-    public Project(){ components = new ArrayList<>();}
-    public Project(int id,String name,double profitMargin,double totalCost,Status status,Component component){
-        this.id=id;
-        this.name=name;
-        this.profitMargin=profitMargin;
-        this.totalCost=totalCost;
-        this.status=status;
+    public Project() {
+        components = new ArrayList<>();
+    }
+
+    public Project(int id, String name, double profitMargin, double totalCost, Status status, Component component) {
+        this.id = id;
+        this.name = name;
+        this.profitMargin = profitMargin;
+        this.totalCost = totalCost;
+        this.status = status;
         this.components = new ArrayList<>();
         this.components.add(component);
     }
+
+
     public int getId() {
         return id;
     }
@@ -88,12 +94,33 @@ public class Project {
     public void setComponents(List<Component> components) {
         this.components = components;
     }
+
     public void add(Component component) {
         components.add(component);
     }
-    public double getTotalCost() {
+
+
+
+    public double getTotalMaterialCost() {
+        return components.stream()
+                .filter(c -> c instanceof Material)
+                .mapToDouble(c -> ((Material) c).getCost())
+                .sum();
+    }
+
+    public double getTotalLaborCost() {
+        return components.stream()
+                .filter(c -> c instanceof Labor)
+                .mapToDouble(c -> ((Labor) c).getCost())
+                .sum();
+    }
+
+    public double getTotalCostProject() {
         return getTotalMaterialCost() + getTotalLaborCost();
     }
 
-
+    public double costWithProfitMargin() {
+        double totalCost = getTotalCostProject();
+        return totalCost * (1 + profitMargin);
+    }
 }
