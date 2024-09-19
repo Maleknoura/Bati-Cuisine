@@ -14,13 +14,14 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleUi {
-    private Connection connection;
-    private ProjectService projectService;
-    private ClientRepository clientRepository;
-    private ComponentRepository<Labor> laborRepository;
-    private ComponentRepository<Material> materialRepository;
+    private final Connection connection;
+    private final ProjectService projectService;
+    private final ClientRepository clientRepository;
+    private final ComponentRepository<Labor> laborRepository;
+    private final ComponentRepository<Material> materialRepository;
 
-    public ConsoleUi(Connection connection, ProjectService projectService, ClientRepository clientRepository, ComponentRepository<Labor> laborRepository, ComponentRepository<Material> materialRepository) {
+    public ConsoleUi(Connection connection, ProjectService projectService, ClientRepository clientRepository,
+                     ComponentRepository<Labor> laborRepository, ComponentRepository<Material> materialRepository) {
         this.connection = connection;
         this.projectService = projectService;
         this.clientRepository = clientRepository;
@@ -31,33 +32,40 @@ public class ConsoleUi {
     public void createProject() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("------- Création d'un Nouveau Projet -----");
+        try {
+            System.out.println("------- Création d'un Nouveau Projet -----");
 
-        Client client = handleClientSelection(scanner);
+            Client client = handleClientSelection(scanner);
 
-        if (client == null) {
-            System.out.println("Échec de la sélection du client.");
-            return;
+            if (client == null) {
+                System.out.println("Échec de la sélection du client.");
+                return;
+            }
+
+            Project project = new Project();
+            System.out.println("--- Création du Projet ---");
+
+            System.out.print("Nom du projet : ");
+            project.setName(scanner.nextLine());
+
+            System.out.print("Statut du projet (EN_COURS/TERMINE/ANNULE) : ");
+            project.setStatus(Status.valueOf(scanner.nextLine().toUpperCase()));
+
+            project.setClient(client);
+
+            projectService.createProject(project);
+            System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
+
+            addLabor(scanner, project);
+            addMaterial(scanner, project);
+
+            // Calcul des coûts
+            calculateCosts(scanner, project);
+
+            System.out.println("Le projet et toutes ses ressources ont été créés avec succès.");
+        } finally {
+            scanner.close();
         }
-
-        Project project = new Project();
-        System.out.println("--- Création du Projet ---");
-
-        System.out.print("Nom du projet : ");
-        project.setName(scanner.nextLine());
-
-        System.out.print("Statut du projet (EN_COURS/TERMINE/ANNULE) : ");
-        project.setStatus(Status.valueOf(scanner.nextLine().toUpperCase()));
-
-        project.setClient(client);
-
-        projectService.createProject(project);
-        System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
-
-        addLabor(scanner, project);
-        addMaterial(scanner, project);
-
-        System.out.println("Le projet et toutes ses ressources ont été créés avec succès.");
     }
 
     private Client handleClientSelection(Scanner scanner) {
@@ -66,8 +74,7 @@ public class ConsoleUi {
         System.out.println("1. Chercher un client existant");
         System.out.println("2. Ajouter un nouveau client");
 
-        int option = scanner.nextInt();
-        scanner.nextLine();
+        int option = getValidOption(scanner, 1, 2);
 
         if (option == 1) {
             return findExistingClient(scanner);
@@ -134,24 +141,22 @@ public class ConsoleUi {
                 labor.setName(scanner.nextLine());
 
                 System.out.print("Coût unitaire : ");
-                labor.setUnitCost(Double.parseDouble(scanner.nextLine()));
+                labor.setUnitCost(getValidDouble(scanner));
 
                 System.out.print("Quantité : ");
-                labor.setQuantity(Double.parseDouble(scanner.nextLine()));
-
-
+                labor.setQuantity(getValidDouble(scanner));
 
                 System.out.print("Taux de taxe : ");
-                labor.setTaxRate(Double.parseDouble(scanner.nextLine()));
+                labor.setTaxRate(getValidDouble(scanner));
 
                 System.out.print("Taux horaire : ");
-                labor.setHourlyRate(Double.parseDouble(scanner.nextLine()));
+                labor.setHourlyRate(getValidDouble(scanner));
 
                 System.out.print("Heures de travail : ");
-                labor.setWorkHours(Double.parseDouble(scanner.nextLine()));
+                labor.setWorkHours(getValidDouble(scanner));
 
                 System.out.print("Productivité des travailleurs : ");
-                labor.setWorkerProductivity(Double.parseDouble(scanner.nextLine()));
+                labor.setWorkerProductivity(getValidDouble(scanner));
 
                 labor.setProject(project);
 
@@ -175,19 +180,19 @@ public class ConsoleUi {
                 material.setName(scanner.nextLine());
 
                 System.out.print("Coût unitaire : ");
-                material.setUnitCost(Double.parseDouble(scanner.nextLine()));
+                material.setUnitCost(getValidDouble(scanner));
 
                 System.out.print("Quantité : ");
-                material.setQuantity(Double.parseDouble(scanner.nextLine()));
+                material.setQuantity(getValidDouble(scanner));
 
                 System.out.print("Taux de taxe : ");
-                material.setTaxRate(Double.parseDouble(scanner.nextLine()));
+                material.setTaxRate(getValidDouble(scanner));
 
                 System.out.print("Coût de transport : ");
-                material.setTransportCost(Double.parseDouble(scanner.nextLine()));
+                material.setTransportCost(getValidDouble(scanner));
 
                 System.out.print("Coefficient de qualité : ");
-                material.setQualityCoefficient(Double.parseDouble(scanner.nextLine()));
+                material.setQualityCoefficient(getValidDouble(scanner));
 
                 material.setProject(project);
 
@@ -197,5 +202,84 @@ public class ConsoleUi {
                 break;
             }
         }
+    }
+
+    private void calculateCosts(Scanner scanner, Project project) {
+        System.out.println("--- Calcul du Coût Total ---");
+
+        System.out.print("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
+        boolean applyVAT = scanner.nextLine().equalsIgnoreCase("y");
+
+        double vatPercentage = 0;
+        if (applyVAT) {
+            System.out.print("Entrez le pourcentage de TVA (%) : ");
+            vatPercentage = getValidDouble(scanner);
+        }
+
+        System.out.print("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
+        boolean applyMargin = scanner.nextLine().equalsIgnoreCase("y");
+
+        double marginPercentage = 0;
+        if (applyMargin) {
+            System.out.print("Entrez le pourcentage de marge bénéficiaire (%) : ");
+            marginPercentage = getValidDouble(scanner);
+        }
+
+        System.out.println("Calcul du coût en cours...");
+
+        double totalMaterialCost = projectService.calculateTotalMaterialCost(project.getId());
+        double totalLaborCost = projectService.calculateTotalLaborCost(project.getId());
+
+        System.out.println("Coût total des matériaux : " + totalMaterialCost);
+        System.out.println("Coût total de la main-d'œuvre : " + totalLaborCost);
+
+        double totalCostBeforeMargin = totalMaterialCost + totalLaborCost;
+
+        if (applyMargin) {
+            projectService.updateProfitMargin(project.getId(), marginPercentage / 100);
+        }
+
+        double marginAmount = applyMargin ? (totalCostBeforeMargin * marginPercentage / 100) : 0;
+        double finalCost = totalCostBeforeMargin + marginAmount;
+
+        System.out.println("Coût total du projet avant TVA : " + totalCostBeforeMargin);
+        System.out.println("Montant de la marge bénéficiaire : " + marginAmount);
+
+        if (applyVAT) {
+            double vatAmount = finalCost * vatPercentage / 100;
+            finalCost += vatAmount;
+            System.out.println("Montant de la TVA : " + vatAmount);
+        }
+
+        System.out.println("Coût total du projet après TVA : " + finalCost);
+    }
+
+
+    private int getValidOption(Scanner scanner, int min, int max) {
+        int option = -1;
+        while (option < min || option > max) {
+            try {
+                System.out.print("Entrez une option (" + min + "-" + max + ") : ");
+                option = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Option invalide. Veuillez entrer un nombre.");
+            }
+        }
+        return option;
+    }
+
+    private double getValidDouble(Scanner scanner) {
+        double value = -1;
+        while (value < 0) {
+            try {
+                value = Double.parseDouble(scanner.nextLine());
+                if (value < 0) {
+                    System.out.println("La valeur ne peut pas être négative. Veuillez réessayer.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Valeur invalide. Veuillez entrer un nombre.");
+            }
+        }
+        return value;
     }
 }

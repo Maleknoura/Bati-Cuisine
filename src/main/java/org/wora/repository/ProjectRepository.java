@@ -16,5 +16,7 @@ public interface ProjectRepository {
     void updateProject(Project project);
 
     void deleteProject(int projectId);
+    void updateProfitMargin(int projectId, double profitMargin);
+
 
 }

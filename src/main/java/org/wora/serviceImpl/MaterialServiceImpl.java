@@ -1,13 +1,15 @@
 package org.wora.serviceImpl;
 
 import org.wora.entity.Material;
-import org.wora.repositoryImpl.MaterialRepositoryImpl;
+import org.wora.repository.ComponentRepository;
 import org.wora.service.ComponentService;
 
-public class MaterialServiceImpl implements ComponentService<Material> {
-    private final MaterialRepositoryImpl materialRepository;
+import java.util.List;
 
-    public MaterialServiceImpl(MaterialRepositoryImpl materialRepository) {
+public class MaterialServiceImpl implements ComponentService<Material> {
+    private final ComponentRepository<Material> materialRepository;
+
+    public MaterialServiceImpl(ComponentRepository<Material> materialRepository) {
         this.materialRepository = materialRepository;
     }
 
@@ -16,6 +18,7 @@ public class MaterialServiceImpl implements ComponentService<Material> {
         materialRepository.add(material, projectId);
     }
 
-
+    public List<Material> findByProjectId(int projectId) {
+        return materialRepository.findByProjectId(projectId);
+    }
 }
-
