@@ -6,10 +6,6 @@ public class Material extends Component{
 
     public Material(){}
 
-    @Override
-    public double getCost() {
-        return 0;
-    }
 
     public Material(String name,double unitCost, double quantity, String componentType, double taxRate,double transportCost,double qualityCoefficient){
         super (name,unitCost,quantity,componentType,taxRate);
@@ -30,5 +26,9 @@ public class Material extends Component{
 
     public void setQualityCoefficient(double qualityCoefficient) {
         this.qualityCoefficient = qualityCoefficient;
+    }
+    @Override
+    public double getCost() {
+        return (getUnitCost() * getQuantity() * getQualityCoefficient()) + getTransportCost();
     }
 }

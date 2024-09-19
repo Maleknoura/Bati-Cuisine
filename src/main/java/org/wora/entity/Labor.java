@@ -7,10 +7,6 @@ public class Labor extends Component {
 
     public Labor(){}
 
-    @Override
-    public double getCost() {
-        return 0;
-    }
 
 
     public Labor(String name,double unitCost, double quantity, String componentType, double taxRate, double hourlyRate, double workHours, double workerProductivity) {
@@ -42,6 +38,10 @@ public class Labor extends Component {
 
     public void setWorkerProductivity(double workerProductivity) {
         this.workerProductivity = workerProductivity;
+    }
+    @Override
+    public double getCost() {
+        return (hourlyRate * workHours * workerProductivity);
     }
 
 }

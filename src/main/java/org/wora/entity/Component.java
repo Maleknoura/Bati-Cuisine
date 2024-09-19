@@ -66,5 +66,10 @@ public abstract class Component {
         this.project = project;
     }
     public abstract double getCost();
+
+    public double getCostWithTVA() {
+        double costBeforeVAT = getCost();
+        return costBeforeVAT * (1 + taxRate);
+    }
 }
 

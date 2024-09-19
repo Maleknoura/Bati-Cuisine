@@ -17,13 +17,13 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
 
     @Override
     public void add(Labor labor, int projectId) {
-        String query = "INSERT INTO labor (name, unitcost, quantity, componenttype, taxRate, hourly_rate, work_hours, worker_productivity, projectId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO labor (name, unitcost, quantity,taxRate, hourly_rate, work_hours, worker_productivity, projectId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, labor.getName());
             stmt.setDouble(2, labor.getUnitCost());
             stmt.setDouble(3, labor.getQuantity());
-            stmt.setString(4, labor.getComponentType());
+
             stmt.setDouble(5, labor.getTaxRate());
             stmt.setDouble(6, labor.getHourlyRate());
             stmt.setDouble(7, labor.getWorkHours());

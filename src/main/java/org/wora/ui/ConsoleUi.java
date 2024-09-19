@@ -139,8 +139,7 @@ public class ConsoleUi {
                 System.out.print("Quantité : ");
                 labor.setQuantity(Double.parseDouble(scanner.nextLine()));
 
-                System.out.print("Type de composant : ");
-                labor.setComponentType(scanner.nextLine());
+
 
                 System.out.print("Taux de taxe : ");
                 labor.setTaxRate(Double.parseDouble(scanner.nextLine()));
@@ -180,9 +179,6 @@ public class ConsoleUi {
 
                 System.out.print("Quantité : ");
                 material.setQuantity(Double.parseDouble(scanner.nextLine()));
-
-                System.out.print("Type de composant : ");
-                material.setComponentType(scanner.nextLine());
 
                 System.out.print("Taux de taxe : ");
                 material.setTaxRate(Double.parseDouble(scanner.nextLine()));

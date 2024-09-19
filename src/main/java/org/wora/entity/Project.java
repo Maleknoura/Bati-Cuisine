@@ -91,6 +91,9 @@ public class Project {
     public void add(Component component) {
         components.add(component);
     }
+    public double getTotalCost() {
+        return getTotalMaterialCost() + getTotalLaborCost();
+    }
 
 
 }
