@@ -9,13 +9,12 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/QuoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/QuoteRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/LaborRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ProjectRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/ProjectRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ComponentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ComponentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/QuoteRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/QuoteRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/LaborServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/LaborServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/MaterialServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/MaterialServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/serviceImpl/ProjectServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" afterDir="false" />
     </list>
@@ -83,5 +82,16 @@
       <updated>1726401982601</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/wora/repositoryImpl/MaterialRepositoryImpl.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

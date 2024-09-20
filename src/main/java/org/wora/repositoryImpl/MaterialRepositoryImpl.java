@@ -18,7 +18,7 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
     }
     @Override
     public void add(Material material, int projectId) {
-        String query = "INSERT INTO material (name, unitcost, quantity, taxrate, transportcost, qualitycoefficient, projectId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO material (name, unitcost, quantity,taxrate, transportcost, qualitycoefficient, projectId) VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, material.getName());
@@ -60,5 +60,20 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
         }
         return materials;
     }
+
+    @Override
+    public void updateTaxRate(int materialId, double taxRate) {
+        String query = "UPDATE material SET taxrate = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDouble(1, taxRate);
+            stmt.setInt(2, materialId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

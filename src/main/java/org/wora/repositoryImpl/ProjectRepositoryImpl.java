@@ -24,12 +24,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     @Override
     public void createProject(Project project) {
 
-        String projectQuery = "INSERT INTO Project (name, status, quoteId, clientId) VALUES (?, ?, ?, ?)";
+        String projectQuery = "INSERT INTO Project (name, status,clientId) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(projectQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, project.getName());
             stmt.setObject(2, project.getStatus().toString(), java.sql.Types.OTHER);
-            stmt.setObject(3, project.getQuote() != null ? project.getQuote().getId() : null);
-            stmt.setObject(4, project.getClient() != null ? project.getClient().getId() : null);
+            stmt.setObject(3, project.getClient() != null ? project.getClient().getId() : null);
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -101,7 +100,17 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             e.printStackTrace();
         }
     }
-
+    @Override
+    public void updateTotalCost(int projectId, double totalCost) {
+        String sql = "UPDATE project SET totalcost = ? WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setDouble(1, totalCost);
+            pstmt.setInt(2, projectId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     }
 

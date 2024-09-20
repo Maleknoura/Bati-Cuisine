@@ -89,4 +89,13 @@ public class ProjectServiceImpl implements ProjectService {
             throw new RuntimeException("Project not found");
         }
     }
+
+    @Override
+    public void updateTaxRate(int componentId, double taxRate) {
+
+    }
+    @Override
+    public void updateTotalCost(int projectId, double totalCost) {
+        projectRepository.updateTotalCost(projectId, totalCost);
+    }
 }

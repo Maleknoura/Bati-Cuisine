@@ -20,10 +20,9 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
 
     @Override
     public void add(Labor labor, int projectId) {
-        String query = "INSERT INTO labor (name, unitcost, quantity, taxRate, hourly_rate, work_hours, worker_productivity, projectId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO labor (name, unitcost, quantity, taxrate, hourly_rate, work_hours, worker_productivity, projectId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-
             stmt.setString(1, labor.getName());
             stmt.setDouble(2, labor.getUnitCost());
             stmt.setDouble(3, labor.getQuantity());
@@ -38,6 +37,7 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
             e.printStackTrace();
         }
     }
+
     @Override
 
     public List<Labor> findByProjectId(int projectId) {
@@ -66,6 +66,18 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
     }
 
 
+    @Override
+    public void updateTaxRate(int laborId, double taxRate) {
+        String query = "UPDATE labor SET taxrate = ? WHERE id = ?";
 
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDouble(1, taxRate);
+            stmt.setInt(2, laborId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

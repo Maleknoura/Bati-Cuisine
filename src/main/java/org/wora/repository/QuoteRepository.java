@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface QuoteRepository {
     List<Quote> findAll();
+    void addQuote(Quote quote,int projectId);
 }
