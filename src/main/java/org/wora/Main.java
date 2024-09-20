@@ -48,7 +48,7 @@ public class Main {
         QuoteService quoteService = new QuoteServiceImpl(quoteRepository);
 
 
-        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, quoteService, clientRepository, laborRepository, materialRepository);
+        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository, laborRepository, materialRepository);
 
 
         projectCreationUI.createProject();
