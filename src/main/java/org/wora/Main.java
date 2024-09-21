@@ -9,15 +9,16 @@ import org.wora.repository.ComponentRepository;
 import org.wora.repository.ProjectRepository;
 
 import org.wora.repository.QuoteRepository;
+import org.wora.repository.repositoryImpl.*;
 import org.wora.repositoryImpl.*;
 
 import org.wora.service.ComponentService;
 import org.wora.service.ProjectService;
 import org.wora.service.QuoteService;
-import org.wora.serviceImpl.LaborServiceImpl;
-import org.wora.serviceImpl.MaterialServiceImpl;
-import org.wora.serviceImpl.ProjectServiceImpl;
-import org.wora.serviceImpl.QuoteServiceImpl;
+import org.wora.service.serviceImpl.LaborServiceImpl;
+import org.wora.service.serviceImpl.MaterialServiceImpl;
+import org.wora.service.serviceImpl.ProjectServiceImpl;
+import org.wora.service.serviceImpl.QuoteServiceImpl;
 import org.wora.ui.ConsoleUi;
 
 import java.sql.Connection;
@@ -48,9 +49,12 @@ public class Main {
         QuoteService quoteService = new QuoteServiceImpl(quoteRepository);
 
 
-        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository, laborRepository, materialRepository);
 
 
-        projectCreationUI.createProject();
+
+        ConsoleUi projectCreationUI = new ConsoleUi(connection, projectService, clientRepository, laborRepository, materialRepository, quoteService);
+
+
+        projectCreationUI.start();
     }
 }

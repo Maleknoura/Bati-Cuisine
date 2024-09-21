@@ -1,4 +1,4 @@
-package org.wora.repositoryImpl;
+package org.wora.repository.repositoryImpl;
 
 import org.wora.entity.Material;
 import org.wora.repository.ComponentRepository;
@@ -33,6 +33,7 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
 
     }
@@ -73,6 +74,11 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int getId(Material material) {
+        return material.getId();
     }
 
 

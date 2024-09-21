@@ -12,6 +12,9 @@ public class Material extends Component{
         this.transportCost=transportCost;
         this.qualityCoefficient=qualityCoefficient;
     }
+    public int getId() {
+        return id;
+    }
     public double getTransportCost() {
         return transportCost;
     }

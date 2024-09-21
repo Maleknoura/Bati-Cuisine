@@ -1,7 +1,7 @@
 package org.wora.entity;
 
 public abstract class Component {
-    private int id;
+    protected int id;
     private String name;
     private double unitCost;
     private double quantity;

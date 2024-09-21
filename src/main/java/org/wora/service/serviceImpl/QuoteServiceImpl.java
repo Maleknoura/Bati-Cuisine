@@ -1,4 +1,4 @@
-package org.wora.serviceImpl;
+package org.wora.service.serviceImpl;
 
 import org.wora.entity.Quote;
 import org.wora.repository.QuoteRepository;

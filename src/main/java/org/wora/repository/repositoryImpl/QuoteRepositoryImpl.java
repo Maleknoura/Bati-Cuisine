@@ -1,4 +1,4 @@
-package org.wora.repositoryImpl;
+package org.wora.repository.repositoryImpl;
 
 import org.wora.entity.Quote;
 import org.wora.repository.QuoteRepository;

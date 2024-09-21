@@ -1,4 +1,4 @@
-package org.wora.serviceImpl;
+package org.wora.service.serviceImpl;
 
 import org.wora.entity.Material;
 import org.wora.repository.ComponentRepository;
@@ -20,5 +20,13 @@ public class MaterialServiceImpl implements ComponentService<Material> {
 
     public List<Material> findByProjectId(int projectId) {
         return materialRepository.findByProjectId(projectId);
+    }
+    @Override
+    public void updateTaxRate(int materialId, double taxRate) {
+        materialRepository.updateTaxRate(materialId, taxRate);
+    }
+    @Override
+    public int getId(Material material){
+        return material.getId();
     }
 }

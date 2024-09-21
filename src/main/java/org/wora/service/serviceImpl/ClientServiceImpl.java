@@ -1,4 +1,4 @@
-package org.wora.serviceImpl;
+package org.wora.service.serviceImpl;
 
 import org.wora.entity.Client;
 import org.wora.repository.ClientRepository;
@@ -23,9 +23,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
 
-    public Client clientExistsByName(String name) {
+    public Optional<Client>  findClientByName(String name) {
         Optional<Client> optionalClient = clientRepository.findClientByName(name);
-        return optionalClient.orElse(null);
+        return clientRepository.findClientByName(name);
     }
 
 

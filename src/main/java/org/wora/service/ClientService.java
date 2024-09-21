@@ -2,11 +2,13 @@ package org.wora.service;
 
 import org.wora.entity.Client;
 
+import java.util.Optional;
+
 public interface ClientService {
 
     void addClient(Client client);
 
-    Client clientExistsByName(String name);
+    Optional<Client> findClientByName(String name);
 
     Client getClientById(int id);
 }

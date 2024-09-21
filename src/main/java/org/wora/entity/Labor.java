@@ -18,7 +18,9 @@ public class Labor extends Component {
     public double getHourlyRate() {
         return hourlyRate;
     }
-
+    public int getId() {
+        return id;
+    }
     public void setHourlyRate(double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }

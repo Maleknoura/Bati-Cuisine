@@ -1,13 +1,19 @@
 package org.wora.ui;
 
-import org.wora.entity.*;
+import org.wora.entity.Client;
 import org.wora.entity.Enum.Status;
+import org.wora.entity.Labor;
+import org.wora.entity.Material;
+import org.wora.entity.Project;
 import org.wora.repository.ClientRepository;
 import org.wora.repository.ComponentRepository;
 import org.wora.service.ProjectService;
+import org.wora.service.serviceImpl.LaborServiceImpl;
+import org.wora.service.serviceImpl.MaterialServiceImpl;
+import org.wora.service.QuoteService;
 
 import java.sql.Connection;
-import java.util.Optional;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ConsoleUi {
@@ -16,28 +22,80 @@ public class ConsoleUi {
     private ClientRepository clientRepository;
     private ComponentRepository<Labor> laborRepository;
     private ComponentRepository<Material> materialRepository;
+    private ClientUI clientUI;
+    private LaborUI laborUI;
+    private MaterialUI materialUI;
+    private QuoteService quoteService;
+    private LaborServiceImpl laborService;
+    private MaterialServiceImpl materialService;
 
-    public ConsoleUi(Connection connection, ProjectService projectService, ClientRepository clientRepository, ComponentRepository<Labor> laborRepository, ComponentRepository<Material> materialRepository) {
+    public ConsoleUi(Connection connection, ProjectService projectService,
+                     ClientRepository clientRepository,
+                     ComponentRepository<Labor> laborRepository,
+                     ComponentRepository<Material> materialRepository,
+                     QuoteService quoteService) {
         this.connection = connection;
         this.projectService = projectService;
         this.clientRepository = clientRepository;
         this.laborRepository = laborRepository;
         this.materialRepository = materialRepository;
+
+        this.clientUI = new ClientUI(clientRepository);
+        this.laborService = new LaborServiceImpl(laborRepository);
+        this.materialService = new MaterialServiceImpl(materialRepository);
+
+        this.laborUI = new LaborUI(laborService);
+        this.materialUI = new MaterialUI(materialService);
+        this.quoteService = quoteService;
     }
 
-    public void createProject() {
+
+    public void start() {
         Scanner scanner = new Scanner(System.in);
 
+        while (true) {
+            System.out.println("------- Menu Principal -------");
+            System.out.println("1. Créer un projet");
+            System.out.println("2. Afficher un projet");
+            System.out.println("3. Modifier un projet");
+            System.out.println("4. Supprimer un projet");
+            System.out.println("5. Quitter");
+            System.out.print("Choisissez une option : ");
+
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    createProject(scanner);
+                    break;
+                case 2:
+                    System.out.println("Afficher le projet");
+                    break;
+                case 3:
+                    System.out.println("Modifier le projet");
+                    break;
+                case 4:
+                    System.out.println("Supprimer le projet");
+                    break;
+                case 5:
+                    System.out.println("Au revoir !");
+                    return;
+                default:
+                    System.out.println("Option invalide. Veuillez choisir une option entre 1 et 5.");
+            }
+        }
+    }
+
+    public void createProject(Scanner scanner) {
         System.out.println("------- Création d'un Nouveau Projet -----");
 
-
-        Client client = handleClientSelection(scanner);
+        Client client = clientUI.handleClientSelection(scanner);
 
         if (client == null) {
             System.out.println("Échec de la sélection du client.");
             return;
         }
-
 
         Project project = new Project();
         System.out.println("--- Création du Projet ---");
@@ -45,154 +103,81 @@ public class ConsoleUi {
         System.out.print("Nom du projet : ");
         project.setName(scanner.nextLine());
 
-
-
         System.out.print("Statut du projet (EN_COURS/TERMINE/ANNULE) : ");
         project.setStatus(Status.valueOf(scanner.nextLine().toUpperCase()));
 
-
         project.setClient(client);
-
-
         projectService.createProject(project);
         System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
 
+        laborUI.addLabor(scanner, project);
+        materialUI.addMaterial(scanner, project);
 
-        addLabor(scanner, project);
-        addMaterial(scanner, project);
+        System.out.print("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
+        boolean applyVAT = scanner.nextLine().equalsIgnoreCase("y");
+        double vatPercentage = 0;
+        if (applyVAT) {
+            System.out.print("Entrez le pourcentage de TVA (%) : ");
+            vatPercentage = Double.parseDouble(scanner.nextLine());
+
+            for (Material material : materialService.findByProjectId(project.getId())) {
+                materialService.updateTaxRate(material.getId(), vatPercentage);
+            }
+
+
+            for (Labor labor : laborService.findByProjectId(project.getId())) {
+                laborService.updateTaxRate(labor.getId(), vatPercentage);
+            }
+        }
+
+
+
+        System.out.print("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
+        boolean applyMargin = scanner.nextLine().equalsIgnoreCase("y");
+        double marginPercentage = 0;
+        if (applyMargin) {
+            System.out.print("Entrez le pourcentage de marge bénéficiaire (%) : ");
+            marginPercentage = Double.parseDouble(scanner.nextLine());
+            projectService.updateProfitMargin(project.getId(), marginPercentage);
+
+        }
+
+        System.out.println("Calcul du coût en cours...");
+        double totalMaterialCost = projectService.calculateTotalMaterialCost(project.getId());
+        double totalLaborCost = projectService.calculateTotalLaborCost(project.getId());
+        System.out.println("Coût total des matériaux : " + totalMaterialCost);
+        System.out.println("Coût total de la main-d'œuvre : " + totalLaborCost);
+        double totalCostBeforeMargin = totalMaterialCost + totalLaborCost;
+
+        double finalCost = totalCostBeforeMargin;
+        if (applyMargin) {
+            double marginAmount = (totalCostBeforeMargin * marginPercentage / 100);
+            finalCost += marginAmount;
+            System.out.println("Montant de la marge bénéficiaire : " + marginAmount);
+        }
+
+        if (applyVAT) {
+            double vatAmount = finalCost * vatPercentage / 100;
+            finalCost += vatAmount;
+            System.out.println("Montant de la TVA : " + vatAmount);
+        }
+
+        System.out.println("Coût total du projet après TVA : " + finalCost);
+        projectService.updateTotalCost(project.getId(), finalCost);
+
+        System.out.print("Souhaitez-vous enregistrer ce devis ? (y/n) : ");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            System.out.println("Veuillez saisir les informations pour le devis :");
+            System.out.print("Date d'émission (AAAA-MM-JJ) : ");
+            LocalDate issueDate = LocalDate.parse(scanner.nextLine());
+            System.out.print("Date de validité (AAAA-MM-JJ) : ");
+            LocalDate validityDate = LocalDate.parse(scanner.nextLine());
+            quoteService.saveQuote(finalCost, issueDate, validityDate, false, project.getId());
+            System.out.println("Devis enregistré avec succès.");
+        }
 
         System.out.println("Le projet et toutes ses ressources ont été créés avec succès.");
     }
 
-    private Client handleClientSelection(Scanner scanner) {
-        System.out.println("--- Recherche de client ---");
-        System.out.println("Souhaitez-vous chercher un client existant ou en ajouter un nouveau ?");
-        System.out.println("1. Chercher un client existant");
-        System.out.println("2. Ajouter un nouveau client");
 
-        int option = scanner.nextInt();
-        scanner.nextLine();
-
-        if (option == 1) {
-            return findExistingClient(scanner);
-        } else if (option == 2) {
-            return createNewClient(scanner);
-        }
-        return null;
-    }
-
-    private Client findExistingClient(Scanner scanner) {
-        System.out.print("Entrez le nom du client : ");
-        String clientName = scanner.nextLine();
-        Optional<Client> clientOpt = clientRepository.findClientByName(clientName);
-
-        if (clientOpt.isPresent()) {
-            Client client = clientOpt.get();
-            System.out.println("Client trouvé :");
-            System.out.println("Nom: " + client.getName());
-            System.out.println("Adresse : " + client.getAdress());
-            System.out.println("Numéro de téléphone : " + client.getNumberPhone());
-
-            System.out.print("Souhaitez-vous continuer avec ce client ? (y/n) : ");
-            String choice = scanner.nextLine();
-            if (choice.equalsIgnoreCase("y")) {
-                return client;
-            }
-        } else {
-            System.out.println("Client non trouvé.");
-        }
-        return null;
-    }
-
-    private Client createNewClient(Scanner scanner) {
-        System.out.println("--- Ajout d'un nouveau client ---");
-
-        System.out.print("Nom du client : ");
-        String name = scanner.nextLine();
-        System.out.print("Adresse du client : ");
-        String address = scanner.nextLine();
-        System.out.print("Numéro de téléphone : ");
-        String phoneNumber = scanner.nextLine();
-        System.out.print("Le client est-il un professionnel ? (oui/non) : ");
-        String isProfessionnelInput = scanner.nextLine();
-        boolean isProfessionnel = isProfessionnelInput.equalsIgnoreCase("oui");
-
-        Client client = new Client();
-        client.setName(name);
-        client.setAdress(address);
-        client.setNumberPhone(phoneNumber);
-        client.setProfessionel(isProfessionnel);
-
-        clientRepository.addClient(client);
-        return client;
-    }
-
-    private void addLabor(Scanner scanner, Project project) {
-        while (true) {
-            System.out.println("Voulez-vous ajouter de la main-d'œuvre au projet ? (oui/non)");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("oui")) {
-                Labor labor = new Labor();
-
-
-                System.out.print("Nom de la main-d'œuvre : ");
-                labor.setName(scanner.nextLine());
-
-                System.out.print("Coût unitaire : ");
-                labor.setUnitCost(Double.parseDouble(scanner.nextLine()));
-
-                System.out.print("Quantité : ");
-                labor.setQuantity(Double.parseDouble(scanner.nextLine()));
-
-                System.out.print("Type de composant : ");
-                labor.setComponentType(scanner.nextLine());
-
-                System.out.print("Taux de taxe : ");
-                labor.setTaxRate(Double.parseDouble(scanner.nextLine()));
-
-
-                System.out.print("Taux horaire : ");
-                labor.setHourlyRate(Double.parseDouble(scanner.nextLine()));
-
-                System.out.print("Heures de travail : ");
-                labor.setWorkHours(Double.parseDouble(scanner.nextLine()));
-
-                System.out.print("Productivité des travailleurs : ");
-                labor.setWorkerProductivity(Double.parseDouble(scanner.nextLine()));
-
-                labor.setProject(project);
-
-                laborRepository.add(labor, project.getId());
-
-                System.out.println("Main-d'œuvre ajoutée au projet.");
-            } else {
-                break;
-            }
-        }
-    }
-
-
-
-    private void addMaterial(Scanner scanner, Project project) {
-        while (true) {
-            System.out.println("Voulez-vous ajouter du matériel au projet ? (oui/non)");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("oui")) {
-                Material material = new Material();
-                System.out.print("Nom du matériel : ");
-                material.setComponentType(scanner.nextLine());
-                System.out.print("Coût unitaire : ");
-                material.setUnitCost(Double.parseDouble(scanner.nextLine()));
-                System.out.print("Quantité : ");
-                material.setQuantity(Double.parseDouble(scanner.nextLine()));
-
-                material.setProject(project);
-
-                materialRepository.add(material,project.getId());
-                System.out.println("Matériel ajouté au projet.");
-            } else {
-                break;
-            }
-        }
-    }
 }

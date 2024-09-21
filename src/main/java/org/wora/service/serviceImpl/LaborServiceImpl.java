@@ -1,4 +1,4 @@
-package org.wora.serviceImpl;
+package org.wora.service.serviceImpl;
 
 import org.wora.entity.Labor;
 import org.wora.repository.ComponentRepository;
@@ -20,5 +20,14 @@ public class LaborServiceImpl implements ComponentService<Labor> {
 
     public List<Labor> findByProjectId(int projectId) {
         return laborRepository.findByProjectId(projectId);
+    }
+
+    @Override
+    public void updateTaxRate(int laborId, double taxRate) {
+        laborRepository.updateTaxRate(laborId, taxRate);
+    }
+    @Override
+    public int getId(Labor labor) {
+        return labor.getId();
     }
 }

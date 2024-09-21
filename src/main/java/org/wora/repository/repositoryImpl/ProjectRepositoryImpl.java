@@ -1,4 +1,4 @@
-package org.wora.repositoryImpl;
+package org.wora.repository.repositoryImpl;
 
 import org.wora.entity.Component;
 import org.wora.entity.Enum.Status;
@@ -64,19 +64,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
         return Optional.empty();
     }
-
-
-    @Override
-    public List<Project> getAllProjects() {
-        return List.of();
-    }
-
-
-    @Override
-    public void updateProject(Project project) {
-
-    }
-
 
     @Override
     public void deleteProject(int projectId) {

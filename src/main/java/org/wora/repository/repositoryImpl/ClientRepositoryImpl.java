@@ -1,4 +1,4 @@
-package org.wora.repositoryImpl;
+package org.wora.repository.repositoryImpl;
 
 import org.wora.entity.Client;
 import org.wora.repository.ClientRepository;
@@ -19,13 +19,12 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
     @Override
     public void addClient(Client client) {
-        String query = "INSERT INTO client (name, address, numberPhone, isProfessionel) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO client (name, address,phonenumber, isProfessionel) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getAdress());
             stmt.setString(3, client.getNumberPhone());
             stmt.setBoolean(4, client.getIsProfessionel());
-            System.out.println("Executing query: " + stmt.toString());
             stmt.executeUpdate();
 
 
@@ -95,10 +94,7 @@ public class ClientRepositoryImpl implements ClientRepository {
         return null;
     }
 
-    @Override
-    public List<Client> findAll() {
-        return List.of();
-    }
+
 
 
 }

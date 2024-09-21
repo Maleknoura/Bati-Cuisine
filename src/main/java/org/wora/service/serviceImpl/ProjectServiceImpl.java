@@ -1,4 +1,4 @@
-package org.wora.serviceImpl;
+package org.wora.service.serviceImpl;
 
 import org.wora.entity.Labor;
 import org.wora.entity.Material;
@@ -84,7 +84,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectOpt.isPresent()) {
             Project project = projectOpt.get();
             project.setProfitMargin(profitMargin);
-            projectRepository.updateProject(project);
+            projectRepository.updateProfitMargin(projectId, profitMargin);
         } else {
             throw new RuntimeException("Project not found");
         }

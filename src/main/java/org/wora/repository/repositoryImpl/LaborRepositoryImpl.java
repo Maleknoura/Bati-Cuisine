@@ -1,5 +1,6 @@
-package org.wora.repositoryImpl;
+package org.wora.repository.repositoryImpl;
 
+import org.wora.entity.Component;
 import org.wora.entity.Labor;
 import org.wora.entity.Project;
 import org.wora.repository.ComponentRepository;
@@ -78,6 +79,11 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int getId(Labor labor) {
+        return labor.getId();
     }
 
 }
