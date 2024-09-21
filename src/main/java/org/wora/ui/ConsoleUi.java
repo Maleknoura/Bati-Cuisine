@@ -119,9 +119,12 @@ public class ConsoleUi {
         if (applyVAT) {
             System.out.print("Entrez le pourcentage de TVA (%) : ");
             vatPercentage = Double.parseDouble(scanner.nextLine());
-
-            for (Material material : materialService.findByProjectId(project.getId())) {
+            System.out.println("tva from user "+vatPercentage);
+            for (Material material : materialService.findByProjectId(project.getId()))
+            {
+                System.out.println("id du projet " + project.getId());
                 materialService.updateTaxRate(material.getId(), vatPercentage);
+                System.out.println(" material id "+ material.getId() + " tax rate" + vatPercentage);
             }
 
 
@@ -139,6 +142,8 @@ public class ConsoleUi {
             System.out.print("Entrez le pourcentage de marge bénéficiaire (%) : ");
             marginPercentage = Double.parseDouble(scanner.nextLine());
             projectService.updateProfitMargin(project.getId(), marginPercentage);
+            System.out.println("Profit margin après update: " + project.getProfitMargin());
+
 
         }
 

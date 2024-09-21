@@ -23,7 +23,7 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
     public void add(Labor labor, int projectId) {
         String query = "INSERT INTO labor (name, unitcost, quantity, taxrate, hourly_rate, work_hours, worker_productivity, projectId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, labor.getName());
             stmt.setDouble(2, labor.getUnitCost());
             stmt.setDouble(3, labor.getQuantity());
@@ -34,6 +34,13 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
             stmt.setInt(8, projectId);
 
             stmt.executeUpdate();
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    labor.setId(generatedKeys.getInt(1));
+                    int id = generatedKeys.getInt(1);
+                    System.out.println("labor id :"+ id );
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,6 +65,7 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
                         rs.getDouble("work_hours"),
                         rs.getDouble("worker_productivity")
                 );
+                labor.setId(rs.getInt("id"));
                 labors.add(labor);
             }
         } catch (SQLException e) {
@@ -75,7 +83,9 @@ public class LaborRepositoryImpl implements ComponentRepository<Labor> {
             stmt.setDouble(1, taxRate);
             stmt.setInt(2, laborId);
 
-            stmt.executeUpdate();
+            int r = stmt.executeUpdate();
+            System.out.println("rows affected : "+r);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

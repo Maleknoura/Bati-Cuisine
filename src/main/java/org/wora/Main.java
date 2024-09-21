@@ -10,7 +10,7 @@ import org.wora.repository.ProjectRepository;
 
 import org.wora.repository.QuoteRepository;
 import org.wora.repository.repositoryImpl.*;
-import org.wora.repositoryImpl.*;
+
 
 import org.wora.service.ComponentService;
 import org.wora.service.ProjectService;

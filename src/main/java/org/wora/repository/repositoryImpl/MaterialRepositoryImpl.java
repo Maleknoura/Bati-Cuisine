@@ -20,7 +20,7 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
     public void add(Material material, int projectId) {
         String query = "INSERT INTO material (name, unitcost, quantity,taxrate, transportcost, qualitycoefficient, projectId) VALUES (?, ?, ?, ?, ?, ?,?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, material.getName());
             stmt.setDouble(2, material.getUnitCost());
             stmt.setDouble(3, material.getQuantity());
@@ -30,6 +30,13 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
             stmt.setInt(7, projectId);
 
             stmt.executeUpdate();
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    material.setId(generatedKeys.getInt(1));
+                    int id = generatedKeys.getInt(1);
+                    System.out.println("material id :"+ id );
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,6 +61,7 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
                         rs.getDouble("transportcost"),
                         rs.getDouble("qualitycoefficient")
                 );
+                material.setId(rs.getInt("id"));
                 materials.add(material);
             }
         } catch (SQLException e) {
@@ -70,7 +78,8 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
             stmt.setDouble(1, taxRate);
             stmt.setInt(2, materialId);
 
-            stmt.executeUpdate();
+            int r = stmt.executeUpdate();
+            System.out.println("rows affected : "+r);
         } catch (SQLException e) {
             e.printStackTrace();
         }
