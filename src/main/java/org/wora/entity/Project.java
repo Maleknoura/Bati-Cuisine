@@ -10,6 +10,7 @@ public class Project {
     private double profitMargin;
     private Status status;
     private Quote quote;
+    private double totalCost;
     private Client client;
     private List<Component> components;
 
@@ -44,6 +45,14 @@ public class Project {
 
     public double getProfitMargin() {
         return profitMargin;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 
     public void setProfitMargin(double profitMargin) {

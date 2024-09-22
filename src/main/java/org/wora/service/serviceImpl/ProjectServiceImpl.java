@@ -98,4 +98,9 @@ public class ProjectServiceImpl implements ProjectService {
     public void updateTotalCost(int projectId, double totalCost) {
         projectRepository.updateTotalCost(projectId, totalCost);
     }
+    @Override
+    public List<Project> displayAllProjects() {
+        return projectRepository.displayAllProjects();
+    }
+
 }

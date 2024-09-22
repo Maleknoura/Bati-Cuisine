@@ -1,6 +1,8 @@
 package org.wora.service;
 
 import org.wora.entity.Project;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface ProjectService {
@@ -16,6 +18,7 @@ public interface ProjectService {
     double calculateTotalCostProject(int projectId);
 
     double calculateCostWithProfitMargin(int projectId);
+    List<Project> displayAllProjects();
 
     double calculateCostWithVAT(int projectId, double vatRate);
     void updateProfitMargin(int projectId, double profitMargin);

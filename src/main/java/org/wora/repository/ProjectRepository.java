@@ -3,6 +3,7 @@ package org.wora.repository;
 import org.wora.entity.Project;
 
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProjectRepository {
@@ -11,6 +12,7 @@ public interface ProjectRepository {
 
     Optional<Project> getProjectById(int projectId);
 
+    List<Project> displayAllProjects();
 
 
     void deleteProject(int projectId);
