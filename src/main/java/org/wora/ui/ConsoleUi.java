@@ -118,7 +118,7 @@ public class ConsoleUi {
         laborUI.addLabor(scanner, project);
         materialUI.addMaterial(scanner, project);
 
-        // Gestion de la TVA
+
         System.out.print("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
         boolean applyVAT = scanner.nextLine().equalsIgnoreCase("y");
         double vatPercentage = 0;
@@ -133,7 +133,6 @@ public class ConsoleUi {
             }
         }
 
-        // Gestion de la marge bénéficiaire
         System.out.print("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         boolean applyMargin = scanner.nextLine().equalsIgnoreCase("y");
         double marginPercentage = 0;
@@ -147,9 +146,9 @@ public class ConsoleUi {
 
         double totalMaterialCost = projectService.calculateTotalMaterialCost(project.getId());
         double totalLaborCost = projectService.calculateTotalLaborCost(project.getId());
-        double totalCostBeforeDiscount = totalMaterialCost + totalLaborCost; // Coût total avant remise
+        double totalCostBeforeDiscount = totalMaterialCost + totalLaborCost;
 
-        // Affichage des coûts
+
         System.out.printf("%50s: %10.2f\n", "Coût total avant remise", totalCostBeforeDiscount);
 
         double totalCostWithDiscount = projectService.calculateTotalCostWithDiscount(project.getId());
@@ -159,7 +158,7 @@ public class ConsoleUi {
         System.out.printf("%50s: %10.2f\n", "Coût total des matériaux", totalMaterialCost);
         System.out.printf("%50s: %10.2f\n", "Coût total de la main-d'œuvre", totalLaborCost);
 
-        double finalCost = totalCostWithDiscount; // Utiliser le coût après remise comme base
+        double finalCost = totalCostWithDiscount;
         System.out.printf("%50s: %10.2f\n", "Coût total avant marge & TVA", finalCost);
 
         if (applyMargin) {

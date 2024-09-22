@@ -85,7 +85,8 @@ public class ClientRepositoryImpl implements ClientRepository {
                             rs.getString("name"),
                             rs.getString("address"),
                             rs.getString("phonenumber"),
-                            rs.getBoolean("isProfessionel")
+                            rs.getBoolean("isProfessionel"),
+                            rs.getDouble("remiserate")
                     );
                 }
             }

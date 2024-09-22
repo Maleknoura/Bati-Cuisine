@@ -14,12 +14,13 @@ public class Client {
     public Client(){
     }
 
-    public Client (int id, String name ,String adress,String numberPhone ,boolean isProfessionel){
+    public Client (int id, String name ,String adress,String numberPhone ,boolean isProfessionel, double remiseRate){
        this.id=id;
        this.name=name;
        this.address=adress;
        this.numberPhone=numberPhone;
        this.isProfessionel=isProfessionel;
+       this.remiseRate = remiseRate;
     }
 
     public int getId() {

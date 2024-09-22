@@ -102,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> projectOpt = getProjectById(projectId);
         if (projectOpt.isPresent()) {
             Project project = projectOpt.get();
-            double totalCost = calculateTotalCostProject(projectId); // Vérifie que cette méthode renvoie le bon coût total.
+            double totalCost = calculateTotalCostProject(projectId);
 
             Client client = project.getClient();
             if (client == null) {
@@ -111,12 +111,12 @@ public class ProjectServiceImpl implements ProjectService {
 
             double discount = 0;
             if (client.getIsProfessionel()) {
-                // Assure-toi que remiseRate est correct (il doit être entre 0 et 100).
                 discount = client.getRemiseRate() / 100 * totalCost;
+
             }
 
-            double totalCostAfterDiscount = totalCost - discount; // Calcul du coût après remise
-            return totalCostAfterDiscount; // Retourner le coût après remise
+            double totalCostAfterDiscount = totalCost - discount;
+            return totalCostAfterDiscount;
         } else {
             throw new RuntimeException("Projet non trouvé pour l'ID : " + projectId);
         }
