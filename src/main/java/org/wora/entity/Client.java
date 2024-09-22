@@ -8,6 +8,7 @@ public class Client {
     private String address;
     private String numberPhone;
     private boolean isProfessionel;
+    private double remiseRate;
     private List<Project> projects;
 
     public Client(){
@@ -39,6 +40,13 @@ public class Client {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getRemiseRate() {
+        return remiseRate;
+    }
+    public void setRemiseRate(double remiseRate){
+        this.remiseRate=remiseRate;
     }
 
     public boolean getIsProfessionel() {

@@ -1,5 +1,6 @@
 package org.wora.service.serviceImpl;
 
+import org.wora.entity.Client;
 import org.wora.entity.Labor;
 import org.wora.entity.Material;
 import org.wora.entity.Project;
@@ -90,14 +91,40 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-    @Override
-    public void updateTaxRate(int componentId, double taxRate) {
 
-    }
     @Override
     public void updateTotalCost(int projectId, double totalCost) {
         projectRepository.updateTotalCost(projectId, totalCost);
     }
+
+    @Override
+    public double calculateTotalCostWithDiscount(int projectId) {
+        Optional<Project> projectOpt = getProjectById(projectId);
+        if (projectOpt.isPresent()) {
+            Project project = projectOpt.get();
+            double totalCost = calculateTotalCostProject(projectId); // Vérifie que cette méthode renvoie le bon coût total.
+
+            Client client = project.getClient();
+            if (client == null) {
+                throw new RuntimeException("Client non trouvé pour le projet avec ID : " + projectId);
+            }
+
+            double discount = 0;
+            if (client.getIsProfessionel()) {
+                // Assure-toi que remiseRate est correct (il doit être entre 0 et 100).
+                discount = client.getRemiseRate() / 100 * totalCost;
+            }
+
+            double totalCostAfterDiscount = totalCost - discount; // Calcul du coût après remise
+            return totalCostAfterDiscount; // Retourner le coût après remise
+        } else {
+            throw new RuntimeException("Projet non trouvé pour l'ID : " + projectId);
+        }
+    }
+
+
+
+
     @Override
     public List<Project> displayAllProjects() {
         return projectRepository.displayAllProjects();

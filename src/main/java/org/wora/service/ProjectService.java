@@ -22,6 +22,6 @@ public interface ProjectService {
 
     double calculateCostWithVAT(int projectId, double vatRate);
     void updateProfitMargin(int projectId, double profitMargin);
-    void updateTaxRate(int componentId, double taxRate);
     void updateTotalCost(int projectId, double totalCost);
+    double calculateTotalCostWithDiscount(int projectId);
 }

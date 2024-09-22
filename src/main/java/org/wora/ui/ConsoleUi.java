@@ -7,11 +7,11 @@ import org.wora.entity.Material;
 import org.wora.entity.Project;
 import org.wora.repository.ClientRepository;
 import org.wora.repository.ComponentRepository;
+import org.wora.service.ComponentService;
 import org.wora.service.ProjectService;
 import org.wora.service.serviceImpl.LaborServiceImpl;
 import org.wora.service.serviceImpl.MaterialServiceImpl;
 import org.wora.service.QuoteService;
-import org.wora.service.serviceImpl.ProjectServiceImpl;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -26,8 +26,9 @@ public class ConsoleUi {
     private LaborUI laborUI;
     private MaterialUI materialUI;
     private QuoteService quoteService;
-    private LaborServiceImpl laborService;
-    private MaterialServiceImpl materialService;
+    private ComponentService<Labor> laborService;
+
+    private ComponentService<Material> materialService;
     private ProjectUI projectUI;
 
     public ConsoleUi(ProjectService projectService,
@@ -36,9 +37,11 @@ public class ConsoleUi {
                      ComponentRepository<Material> materialRepository,
                      QuoteService quoteService,
                      ClientUI clientUI,
+                     ComponentService<Labor> laborService,
                      LaborUI laborUI,
                      MaterialUI materialUI,
-                     ProjectUI projectUI) {
+                     ProjectUI projectUI,
+                     ComponentService<Material> materialService) {
         this.projectService = projectService;
         this.clientRepository = clientRepository;
         this.laborRepository = laborRepository;
@@ -48,7 +51,11 @@ public class ConsoleUi {
         this.laborUI = laborUI;
         this.materialUI = materialUI;
         this.projectUI = projectUI;
+        this.laborService = laborService;
+        this.materialService = materialService;
     }
+
+
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -89,11 +96,9 @@ public class ConsoleUi {
 
 
     public void createProject(Scanner scanner) {
-
         System.out.println("\033[35m==================== Création d'un Nouveau Projet ====================\033[0m");
 
         Client client = clientUI.handleClientSelection(scanner);
-
         if (client == null) {
             System.out.println("Échec de la sélection du client.");
             return;
@@ -104,16 +109,16 @@ public class ConsoleUi {
 
         System.out.print("Nom du projet : ");
         project.setName(scanner.nextLine());
-
         project.setClient(client);
+        System.out.println("Client ID associé au projet : " + client.getId());
+
         projectService.createProject(project);
         System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
-
 
         laborUI.addLabor(scanner, project);
         materialUI.addMaterial(scanner, project);
 
-
+        // Gestion de la TVA
         System.out.print("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
         boolean applyVAT = scanner.nextLine().equalsIgnoreCase("y");
         double vatPercentage = 0;
@@ -123,13 +128,12 @@ public class ConsoleUi {
             for (Material material : materialService.findByProjectId(project.getId())) {
                 materialService.updateTaxRate(material.getId(), vatPercentage);
             }
-
             for (Labor labor : laborService.findByProjectId(project.getId())) {
                 laborService.updateTaxRate(labor.getId(), vatPercentage);
             }
         }
 
-
+        // Gestion de la marge bénéficiaire
         System.out.print("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         boolean applyMargin = scanner.nextLine().equalsIgnoreCase("y");
         double marginPercentage = 0;
@@ -139,23 +143,27 @@ public class ConsoleUi {
             projectService.updateProfitMargin(project.getId(), marginPercentage);
         }
 
-
         System.out.println("\033[35m==================== Calcul du Coût ====================\033[0m");
 
         double totalMaterialCost = projectService.calculateTotalMaterialCost(project.getId());
         double totalLaborCost = projectService.calculateTotalLaborCost(project.getId());
+        double totalCostBeforeDiscount = totalMaterialCost + totalLaborCost; // Coût total avant remise
 
+        // Affichage des coûts
+        System.out.printf("%50s: %10.2f\n", "Coût total avant remise", totalCostBeforeDiscount);
+
+        double totalCostWithDiscount = projectService.calculateTotalCostWithDiscount(project.getId());
+        System.out.printf("%50s: %10.2f\n", "Coût total après remise", totalCostWithDiscount);
 
         System.out.printf("\n%50s\n", "-------- Devis --------");
         System.out.printf("%50s: %10.2f\n", "Coût total des matériaux", totalMaterialCost);
         System.out.printf("%50s: %10.2f\n", "Coût total de la main-d'œuvre", totalLaborCost);
 
-        double totalCostBeforeMargin = totalMaterialCost + totalLaborCost;
-        System.out.printf("%50s: %10.2f\n", "Coût total avant marge & TVA", totalCostBeforeMargin);
+        double finalCost = totalCostWithDiscount; // Utiliser le coût après remise comme base
+        System.out.printf("%50s: %10.2f\n", "Coût total avant marge & TVA", finalCost);
 
-        double finalCost = totalCostBeforeMargin;
         if (applyMargin) {
-            double marginAmount = totalCostBeforeMargin * marginPercentage / 100;
+            double marginAmount = finalCost * marginPercentage / 100;
             finalCost += marginAmount;
             System.out.printf("%50s: %10.2f\n", "Marge bénéficiaire", marginAmount);
             System.out.printf("%50s: %10.2f\n", "Coût avant TVA", finalCost);
@@ -167,12 +175,10 @@ public class ConsoleUi {
             System.out.printf("%50s: %10.2f\n", "Montant de la TVA", vatAmount);
         }
 
-
         System.out.println("\033[35m==================== Coût Final du Projet ====================\033[0m");
         System.out.printf("%50s: %10.2f\n", "Coût total du projet après TVA", finalCost);
 
         projectService.updateTotalCost(project.getId(), finalCost);
-
 
         System.out.print("Souhaitez-vous enregistrer ce devis ? (y/n) : ");
         if (scanner.nextLine().equalsIgnoreCase("y")) {
@@ -186,6 +192,8 @@ public class ConsoleUi {
 
         System.out.printf("%50s\n", "Le projet et toutes ses ressources ont été créés avec succès.");
     }
+
+
 
 
 

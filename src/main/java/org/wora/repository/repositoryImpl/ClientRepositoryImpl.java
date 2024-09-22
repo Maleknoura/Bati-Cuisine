@@ -19,12 +19,13 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
     @Override
     public void addClient(Client client) {
-        String query = "INSERT INTO client (name, address,phonenumber, isProfessionel) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO client (name, address,phonenumber, isProfessionel,remiseRate) VALUES (?, ?, ?, ?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getAdress());
             stmt.setString(3, client.getNumberPhone());
             stmt.setBoolean(4, client.getIsProfessionel());
+            stmt.setDouble(5,client.getRemiseRate());
             stmt.executeUpdate();
 
 
@@ -82,8 +83,8 @@ public class ClientRepositoryImpl implements ClientRepository {
                     return new Client(
                             rs.getInt("id"),
                             rs.getString("name"),
-                            rs.getString("adress"),
-                            rs.getString("numberPhone"),
+                            rs.getString("address"),
+                            rs.getString("phonenumber"),
                             rs.getBoolean("isProfessionel")
                     );
                 }

@@ -2,7 +2,10 @@ package org.wora.repository.repositoryImpl;
 
 import org.wora.entity.*;
 import org.wora.entity.Enum.Status;
+import org.wora.repository.ClientRepository;
 import org.wora.repository.ProjectRepository;
+import org.wora.service.ClientService;
+import org.wora.service.serviceImpl.ClientServiceImpl;
 
 import javax.print.attribute.standard.MediaSize;
 import java.lang.reflect.Type;
@@ -14,9 +17,11 @@ import java.util.*;
 
 public class ProjectRepositoryImpl implements ProjectRepository {
     private final Connection connection;
+    private ClientService clientService;
 
-    public ProjectRepositoryImpl(Connection connection) {
+    public ProjectRepositoryImpl(Connection connection,ClientService clientService) {
         this.connection = connection;
+        this.clientService = clientService;
     }
 
     @Override
@@ -26,6 +31,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         try (PreparedStatement stmt = connection.prepareStatement(projectQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, project.getName());
             stmt.setObject(2, project.getClient() != null ? project.getClient().getId() : null);
+            System.out.println("Client ID: " + (project.getClient() != null ? project.getClient().getId() : "null"));
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -34,13 +40,14 @@ public class ProjectRepositoryImpl implements ProjectRepository {
                 }
             }
 
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     @Override
     public Optional<Project> getProjectById(int projectId) {
-        String query = "SELECT id, name, profitmargin, status FROM project WHERE id = ?";
+        String query = "SELECT id, name, profitmargin, status,clientId FROM project WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, projectId);
@@ -51,7 +58,9 @@ public class ProjectRepositoryImpl implements ProjectRepository {
                     project.setName(rs.getString("name"));
                     project.setProfitMargin(rs.getDouble("profitmargin"));
                     project.setStatus(Status.valueOf(rs.getString("status")));
-
+                    int clientId = rs.getInt("clientid");
+                    Client client = clientService.getClientById(clientId).orElse(null);
+                    project.setClient(client);
                     return Optional.of(project);
                 }
             }

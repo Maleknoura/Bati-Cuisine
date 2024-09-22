@@ -16,22 +16,16 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void addClient(Client client) {
-
         clientRepository.addClient(client);
     }
 
-
     @Override
-
-    public Optional<Client>  findClientByName(String name) {
-        Optional<Client> optionalClient = clientRepository.findClientByName(name);
+    public Optional<Client> findClientByName(String name) {
         return clientRepository.findClientByName(name);
     }
 
-
-
     @Override
-    public Client getClientById(int id) {
-        return clientRepository.getClientById(id);
+    public Optional<Client> getClientById(int id) {
+        return Optional.ofNullable(clientRepository.getClientById(id));
     }
 }

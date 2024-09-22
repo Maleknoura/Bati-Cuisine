@@ -71,6 +71,14 @@ public class ClientUI {
         client.setNumberPhone(phoneNumber);
         client.setProfessionel(isProfessionnel);
 
+        if (isProfessionnel) {
+            System.out.print("Entrez le taux de remise (%): ");
+            double remiseRate = Double.parseDouble(scanner.nextLine());
+            client.setRemiseRate(remiseRate);
+        } else {
+            client.setRemiseRate(0);
+        }
+
         clientService.addClient(client);
         return client;
     }
