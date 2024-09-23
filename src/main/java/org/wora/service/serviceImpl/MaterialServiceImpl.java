@@ -2,6 +2,7 @@ package org.wora.service.serviceImpl;
 
 import org.wora.entity.Material;
 import org.wora.repository.ComponentRepository;
+import org.wora.repository.repositoryImpl.MaterialRepositoryImpl;
 import org.wora.service.ComponentService;
 
 import java.util.List;
@@ -29,4 +30,11 @@ public class MaterialServiceImpl implements ComponentService<Material> {
     public int getId(Material material){
         return material.getId();
     }
+
+    @Override
+    public void deleteById(int id) {
+        materialRepository.deleteById(id);
+    }
+
+
 }

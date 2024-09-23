@@ -11,4 +11,5 @@ public interface ClientService {
     Optional<Client> findClientByName(String name);
 
     Optional<Client> getClientById(int id);
+
 }

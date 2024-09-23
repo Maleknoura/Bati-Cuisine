@@ -77,6 +77,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, projectId);
             stmt.executeUpdate();
+            System.out.println("projetID"+projectId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

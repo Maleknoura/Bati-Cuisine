@@ -4,6 +4,7 @@ import org.wora.entity.*;
 import org.wora.service.ProjectService;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class ProjectUI {
     private ProjectService projectService;
@@ -57,6 +58,21 @@ public class ProjectUI {
                 }
             }
             System.out.println("==============================================");
+        }
+    }
+    public void deleteProject(Scanner scanner, ProjectService projectService) {
+        System.out.print("Veuillez saisir l'ID du projet à supprimer : ");
+        int projectId = Integer.parseInt(scanner.nextLine());
+
+
+        System.out.print("Êtes-vous sûr de vouloir supprimer le projet avec l'ID " + projectId + " ? (y/n) : ");
+        String confirmation = scanner.nextLine();
+
+        if (confirmation.equalsIgnoreCase("y")) {
+            projectService.deleteById(projectId);
+            System.out.println("Le projet avec l'ID " + projectId + " a été supprimé avec succès.");
+        } else {
+            System.out.println("Suppression annulée.");
         }
     }
 

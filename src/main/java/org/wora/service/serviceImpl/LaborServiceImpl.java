@@ -30,4 +30,9 @@ public class LaborServiceImpl implements ComponentService<Labor> {
     public int getId(Labor labor) {
         return labor.getId();
     }
+
+    @Override
+    public void deleteById(int id) {
+        laborRepository.deleteById(id);
+    }
 }

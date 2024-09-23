@@ -90,5 +90,18 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
         return material.getId();
     }
 
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE FROM Material WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 }

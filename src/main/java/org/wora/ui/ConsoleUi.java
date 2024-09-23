@@ -83,7 +83,7 @@ public class ConsoleUi {
                     System.out.println("Modifier le projet");
                     break;
                 case 4:
-                    System.out.println("Supprimer le projet");
+                    projectUI.deleteProject(scanner, projectService);
                     break;
                 case 5:
                     System.out.println("Au revoir !");

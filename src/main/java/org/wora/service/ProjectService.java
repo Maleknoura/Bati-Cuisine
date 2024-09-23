@@ -24,4 +24,5 @@ public interface ProjectService {
     void updateProfitMargin(int projectId, double profitMargin);
     void updateTotalCost(int projectId, double totalCost);
     double calculateTotalCostWithDiscount(int projectId);
+    void deleteById(int id);
 }

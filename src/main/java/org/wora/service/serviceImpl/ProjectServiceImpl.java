@@ -122,7 +122,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-
+    @Override
+    public void deleteById(int id) {
+        projectRepository.deleteProject(id);
+    }
 
 
     @Override

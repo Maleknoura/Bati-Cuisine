@@ -7,5 +7,5 @@ public interface ComponentService <T> {
     List<T> findByProjectId(int projectId);
     void updateTaxRate(int componentId, double taxRate);
     int getId(T component);
-
+    void deleteById(int id);
 }
