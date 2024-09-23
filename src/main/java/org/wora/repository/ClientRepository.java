@@ -10,5 +10,6 @@ public interface ClientRepository {
     void addClient(Client client);
     Optional<Client> findClientByName(String name);
     Client getClientById(int id);
+    boolean existsByName(String name);
 
 }

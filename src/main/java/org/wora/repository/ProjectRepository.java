@@ -14,7 +14,7 @@ public interface ProjectRepository {
 
     List<Project> displayAllProjects();
 
-
+    Optional<Project> findProjectById(int projectId);
     void deleteProject(int projectId);
     void updateProfitMargin(int projectId, double profitMargin);
     void updateTotalCost(int projectId, double totalCost);

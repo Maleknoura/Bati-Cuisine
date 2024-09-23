@@ -25,4 +25,5 @@ public interface ProjectService {
     void updateTotalCost(int projectId, double totalCost);
     double calculateTotalCostWithDiscount(int projectId);
     void deleteById(int id);
+    Optional<Project> FindProjectById(int projectId);
 }

@@ -3,6 +3,7 @@ package org.wora.repository.repositoryImpl;
 import org.wora.entity.Client;
 import org.wora.repository.ClientRepository;
 
+import java.lang.reflect.InvocationHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     public ClientRepositoryImpl(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public void addClient(Client client) {
         String query = "INSERT INTO client (name, address,phonenumber, isProfessionel,remiseRate) VALUES (?, ?, ?, ?,?)";
@@ -25,7 +27,7 @@ public class ClientRepositoryImpl implements ClientRepository {
             stmt.setString(2, client.getAdress());
             stmt.setString(3, client.getNumberPhone());
             stmt.setBoolean(4, client.getIsProfessionel());
-            stmt.setDouble(5,client.getRemiseRate());
+            stmt.setDouble(5, client.getRemiseRate());
             stmt.executeUpdate();
 
 
@@ -72,8 +74,6 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
 
-
-
     public Client getClientById(int id) {
         String query = "SELECT * FROM client WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -96,7 +96,16 @@ public class ClientRepositoryImpl implements ClientRepository {
         return null;
     }
 
-
+    public boolean existsByName(String name) {
+        final String query = "SELECT EXISTS (SELECT 1 FROM client WHERE name = ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 
 }

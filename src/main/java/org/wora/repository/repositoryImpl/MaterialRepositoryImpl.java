@@ -21,6 +21,7 @@ public class MaterialRepositoryImpl implements ComponentRepository<Material> {
         String query = "INSERT INTO material (name, unitcost, quantity,taxrate, transportcost, qualitycoefficient, projectId) VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            System.out.println("here is the name before set in stmt "+ material.getName());
             stmt.setString(1, material.getName());
             stmt.setDouble(2, material.getUnitCost());
             stmt.setDouble(3, material.getQuantity());

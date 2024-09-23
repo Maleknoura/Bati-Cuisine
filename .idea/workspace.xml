@@ -6,19 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="b19320f0-e52d-4827-8df9-ace9f0019ca7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ComponentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/LaborRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/LaborRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ClientRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ClientRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/MaterialRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/MaterialRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ProjectRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ProjectRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ComponentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ComponentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/LaborServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/LaborServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/MaterialServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/MaterialServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/ProjectServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ClientUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ClientUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/LaborUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/LaborUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/MaterialUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/MaterialUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ProjectUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ProjectUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/utilitaire/ValidationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/utilitaire/ValidationUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,19 +61,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Maven.Bati-Cuisine [verify].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn verify" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.wora.Main" />
+      <module name="Bati-Cuisine" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.wora.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

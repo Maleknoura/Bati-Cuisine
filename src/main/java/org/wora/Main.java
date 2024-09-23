@@ -35,8 +35,6 @@ public class Main {
 
 
 
-
-
         ClientRepository clientRepository = new ClientRepositoryImpl(connection);
 
 

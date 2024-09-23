@@ -1,12 +1,12 @@
 package org.wora.ui;
 
 
-
 import org.wora.entity.Material;
 import org.wora.entity.Project;
 import org.wora.service.ComponentService;
+import org.wora.utilitaire.ValidationUtils;
 
-import java.util.Scanner;
+import static org.wora.utilitaire.InputScanner.*;
 
 public class MaterialUI {
     private ComponentService<Material> materialService;
@@ -15,32 +15,27 @@ public class MaterialUI {
         this.materialService = materialService;
     }
 
-    public void addMaterial(Scanner scanner, Project project) {
-        while (true) {
-            System.out.println("Voulez-vous ajouter du matériel au projet ? (oui/non)");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("oui")) {
-                Material material = new Material();
-                System.out.print("Nom du matériel : ");
-                material.setName(scanner.nextLine());
-                System.out.print("Coût unitaire : ");
-                material.setUnitCost(Double.parseDouble(scanner.nextLine()));
-                System.out.print("Quantité : ");
-                material.setQuantity(Double.parseDouble(scanner.nextLine()));
-                System.out.print("Coût de transport : ");
-                material.setTransportCost(Double.parseDouble(scanner.nextLine()));
+    public void addMaterial(Project project) {
+        Material material = new Material();
+        String name = scanString("Entrez le nom du : ", ValidationUtils.NOT_BLANK);
+        material.setName(name);
 
+        material.setUnitCost(scanDouble("Cout unitaire", ValidationUtils.POSITIVE_DOUBLE));
 
-                System.out.print("Coefficient de qualité : ");
-                material.setQualityCoefficient(Double.parseDouble(scanner.nextLine()));
+        material.setQuantity(scanInt("Quantité", ValidationUtils.POSITIVE_INT));
 
-                material.setProject(project);
+        material.setTransportCost(scanDouble("Coût de transport : ", ValidationUtils.POSITIVE_DOUBLE));
 
-                materialService.add(material, project.getId());
-                System.out.println("Matériel ajouté au projet.");
-            } else {
-                break;
-            }
+        material.setQualityCoefficient(scanDouble("Coefficient de qualité : ", ValidationUtils.POSITIVE_DOUBLE));
+
+        material.setProject(project);
+
+        materialService.add(material, project.getId());
+        System.out.println("Matériel ajouté au projet.");
+
+        Boolean addMateriel = scanBoolean("Voulez-bous ajouter du materiel au project ? (oui/non): ");
+        if (addMateriel) {
+            addMaterial(project);
         }
     }
 }

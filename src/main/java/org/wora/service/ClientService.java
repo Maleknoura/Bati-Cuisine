@@ -12,4 +12,5 @@ public interface ClientService {
 
     Optional<Client> getClientById(int id);
 
+    boolean existsByName(String name);
 }

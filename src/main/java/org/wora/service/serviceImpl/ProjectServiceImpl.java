@@ -132,5 +132,9 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> displayAllProjects() {
         return projectRepository.displayAllProjects();
     }
+    @Override
+    public Optional<Project> FindProjectById(int projectId) {
+        return projectRepository.findProjectById(projectId);
+    }
 
 }

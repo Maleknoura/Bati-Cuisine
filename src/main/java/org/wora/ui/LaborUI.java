@@ -1,12 +1,14 @@
 package org.wora.ui;
 
 
-
 import org.wora.entity.Labor;
 import org.wora.entity.Project;
 import org.wora.service.ComponentService;
+import org.wora.utilitaire.ValidationUtils;
 
 import java.util.Scanner;
+
+import static org.wora.utilitaire.InputScanner.*;
 
 public class LaborUI {
     private ComponentService<Labor> laborService;
@@ -16,41 +18,34 @@ public class LaborUI {
         this.laborService = laborService;
     }
 
-    public void addLabor(Scanner scanner, Project project) {
-        while (true) {
-            System.out.println("Voulez-vous ajouter de la main-d'œuvre au projet ? (oui/non)");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("oui")) {
-                Labor labor = new Labor();
+    public void addLabor(Project project) {
+        Labor labor = new Labor();
 
-                System.out.print("Nom de la main-d'œuvre : ");
-                labor.setName(scanner.nextLine());
+        labor.setName(
+                scanString("Nom de la main d'oeuvre: ", ValidationUtils.NOT_BLANK)
+        );
+        labor.setUnitCost(scanDouble("Coût unitaire : ", ValidationUtils.POSITIVE_DOUBLE));
 
-                System.out.print("Coût unitaire : ");
-                labor.setUnitCost(Double.parseDouble(scanner.nextLine()));
+        labor.setQuantity(
+                scanInt("Quantité : ",ValidationUtils.POSITIVE_INT));
 
-                System.out.print("Quantité : ");
-                labor.setQuantity(Double.parseDouble(scanner.nextLine()));
+        labor.setHourlyRate(scanDouble("Taux horaire:",ValidationUtils.POSITIVE_DOUBLE));
 
+        labor.setWorkHours(scanDouble("Heures de travail : ",ValidationUtils.POSITIVE_DOUBLE));
 
-                System.out.print("Taux horaire : ");
-                labor.setHourlyRate(Double.parseDouble(scanner.nextLine()));
+        labor.setWorkerProductivity(scanDouble("Productivité des travailleurs",ValidationUtils.POSITIVE_DOUBLE));
 
-                System.out.print("Heures de travail : ");
-                labor.setWorkHours(Double.parseDouble(scanner.nextLine()));
+        labor.setProject(project);
 
-                System.out.print("Productivité des travailleurs : ");
-                labor.setWorkerProductivity(Double.parseDouble(scanner.nextLine()));
+        laborService.add(labor, project.getId());
 
-                labor.setProject(project);
+        System.out.println("Main-d'œuvre ajoutée au projet.");
 
-                laborService.add(labor, project.getId());
-
-                System.out.println("Main-d'œuvre ajoutée au projet.");
-            } else {
-                break;
-            }
+        Boolean addMore = scanBoolean("Voulez-vous ajouter de la main-d'œuvre au projet ? (oui/non)");
+        if (addMore) {
+            addLabor(project);
         }
     }
 }
+
 

@@ -4,14 +4,17 @@ import org.wora.entity.*;
 import org.wora.service.ProjectService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ProjectUI {
     private ProjectService projectService;
+    private static final Scanner scanner = new Scanner(System.in);
 
     public ProjectUI(ProjectService projectService) {
         this.projectService = projectService;
     }
+
 
     public void displayAllProjects() {
         List<Project> projects = projectService.displayAllProjects();
@@ -60,6 +63,7 @@ public class ProjectUI {
             System.out.println("==============================================");
         }
     }
+
     public void deleteProject(Scanner scanner, ProjectService projectService) {
         System.out.print("Veuillez saisir l'ID du projet à supprimer : ");
         int projectId = Integer.parseInt(scanner.nextLine());
@@ -76,4 +80,44 @@ public class ProjectUI {
         }
     }
 
+    public void afficherProjet() {
+
+        System.out.print("\033[35m" + "Entrez l'ID du projet que vous souhaitez afficher : " + "\033[0m");
+        int projectId = scanner.nextInt();
+
+
+        Optional<Project> projectOptional = projectService.FindProjectById(projectId);
+
+
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            System.out.println("\033[1;37m" + "=== Détails du projet ===" + "\033[0m");
+            System.out.println("\033[35m" + "Nom du projet : " + "\033[37m" + project.getName());
+            System.out.println("\033[35m" + "Marge bénéficiaire : " + "\033[37m" + project.getProfitMargin() + "%");
+            System.out.println("\033[35m" + "Coût total : " + "\033[37m" + project.getTotalCost() + "€");
+            System.out.println("\033[35m" + "Statut : " + "\033[37m" + project.getStatus());
+            System.out.println("\033[35m" + "Client : " + "\033[37m" + project.getClient().getName());
+            System.out.println("\033[35m" + "Téléphone du client : " + "\033[37m" + project.getClient().getNumberPhone());
+
+
+            System.out.println("\033[35m" + "--- Composants ---" + "\033[0m");
+            project.getComponents().forEach(component -> {
+                if (component instanceof Material) {
+                    Material material = (Material) component;
+                    System.out.println("\033[35m" + "Type : " + "\033[37m" + "Matériau");
+                    System.out.println("\033[35m" + "Nom : " + "\033[37m" + material.getName());
+                    System.out.println("\033[35m" + "Coût unitaire : " + "\033[37m" + material.getUnitCost());
+                    System.out.println("\033[35m" + "Quantité : " + "\033[37m" + material.getQuantity());
+                } else if (component instanceof Labor) {
+                    Labor labor = (Labor) component;
+                    System.out.println("\033[35m" + "Type : " + "\033[37m" + "Travail");
+                    System.out.println("\033[35m" + "Nom : " + "\033[37m" + labor.getName());
+                    System.out.println("\033[35m" + "Taux horaire : " + "\033[37m" + labor.getHourlyRate());
+                    System.out.println("\033[35m" + "Heures travaillées : " + "\033[37m" + labor.getWorkHours());
+                }
+            });
+        } else {
+            System.out.println("\033[31m" + "Projet introuvable pour l'ID : " + projectId + "\033[0m");
+        }
+    }
 }

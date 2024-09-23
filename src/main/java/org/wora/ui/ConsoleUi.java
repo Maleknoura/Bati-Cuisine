@@ -1,7 +1,6 @@
 package org.wora.ui;
 
 import org.wora.entity.Client;
-import org.wora.entity.Enum.Status;
 import org.wora.entity.Labor;
 import org.wora.entity.Material;
 import org.wora.entity.Project;
@@ -9,13 +8,14 @@ import org.wora.repository.ClientRepository;
 import org.wora.repository.ComponentRepository;
 import org.wora.service.ComponentService;
 import org.wora.service.ProjectService;
-import org.wora.service.serviceImpl.LaborServiceImpl;
-import org.wora.service.serviceImpl.MaterialServiceImpl;
 import org.wora.service.QuoteService;
+import org.wora.utilitaire.ValidationUtils;
 
-import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Scanner;
+
+import static org.wora.utilitaire.InputScanner.*;
 
 public class ConsoleUi {
     private ProjectService projectService;
@@ -56,7 +56,6 @@ public class ConsoleUi {
     }
 
 
-
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
@@ -64,23 +63,22 @@ public class ConsoleUi {
             System.out.println("------- Menu Principal -------");
             System.out.println("1. Créer un projet");
             System.out.println("2. Afficher un projet");
-            System.out.println("3. Modifier un projet");
+            System.out.println("3. calculer un projet");
             System.out.println("4. Supprimer un projet");
             System.out.println("5. Quitter");
             System.out.print("Choisissez une option : ");
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            Integer option = scanInt("Choisissez une option: ", ValidationUtils.POSITIVE_INT);
 
             switch (option) {
                 case 1:
-                    createProject(scanner);
+                    createProject();
                     break;
                 case 2:
                     projectUI.displayAllProjects();
                     break;
                 case 3:
-                    System.out.println("Modifier le projet");
+                    projectUI.afficherProjet();
                     break;
                 case 4:
                     projectUI.deleteProject(scanner, projectService);
@@ -95,36 +93,38 @@ public class ConsoleUi {
     }
 
 
-    public void createProject(Scanner scanner) {
+    public void createProject() {
         System.out.println("\033[35m==================== Création d'un Nouveau Projet ====================\033[0m");
 
-        Client client = clientUI.handleClientSelection(scanner);
-        if (client == null) {
-            System.out.println("Échec de la sélection du client.");
+        Optional<Client> clientOptional = clientUI.handleClientSelection();
+
+        if (clientOptional.isEmpty()) {
+            System.out.println("client not found !");
             return;
         }
-
+        final Client client = clientOptional.get();
         Project project = new Project();
         System.out.println("--- Création du Projet ---");
 
-        System.out.print("Nom du projet : ");
-        project.setName(scanner.nextLine());
+        project.setName(
+                scanString("ENtrez le nom: ", ValidationUtils.NOT_BLANK)
+        );
         project.setClient(client);
         System.out.println("Client ID associé au projet : " + client.getId());
 
         projectService.createProject(project);
         System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
 
-        laborUI.addLabor(scanner, project);
-        materialUI.addMaterial(scanner, project);
+        if (scanBoolean("Do you want to add labors: "))
+            laborUI.addLabor(project);
+        if (scanBoolean("Do you want to add materiels"))
+            materialUI.addMaterial(project);
 
 
-        System.out.print("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
-        boolean applyVAT = scanner.nextLine().equalsIgnoreCase("y");
+        Boolean applyTva = scanBoolean("Souhaitez-vous appliquer une TVA au project ? (y/n): ");
         double vatPercentage = 0;
-        if (applyVAT) {
-            System.out.print("Entrez le pourcentage de TVA (%) : ");
-            vatPercentage = Double.parseDouble(scanner.nextLine());
+        if (applyTva) {
+            scanDouble("Entrez le pourcentage de TVA (%): ", ValidationUtils.POSITIVE_DOUBLE);
             for (Material material : materialService.findByProjectId(project.getId())) {
                 materialService.updateTaxRate(material.getId(), vatPercentage);
             }
@@ -132,16 +132,12 @@ public class ConsoleUi {
                 laborService.updateTaxRate(labor.getId(), vatPercentage);
             }
         }
-
-        System.out.print("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
-        boolean applyMargin = scanner.nextLine().equalsIgnoreCase("y");
-        double marginPercentage = 0;
+        Boolean applyMargin = scanBoolean("Do you want to appy profit margin: ");
+        Double marginPercentage = 0.0;
         if (applyMargin) {
-            System.out.print("Entrez le pourcentage de marge bénéficiaire (%) : ");
-            marginPercentage = Double.parseDouble(scanner.nextLine());
+            marginPercentage = scanDouble("Please to enter the profit margin : ", ValidationUtils.POSITIVE_DOUBLE);
             projectService.updateProfitMargin(project.getId(), marginPercentage);
         }
-
         System.out.println("\033[35m==================== Calcul du Coût ====================\033[0m");
 
         double totalMaterialCost = projectService.calculateTotalMaterialCost(project.getId());
@@ -168,7 +164,7 @@ public class ConsoleUi {
             System.out.printf("%50s: %10.2f\n", "Coût avant TVA", finalCost);
         }
 
-        if (applyVAT) {
+        if (applyTva) {
             double vatAmount = finalCost * vatPercentage / 100;
             finalCost += vatAmount;
             System.out.printf("%50s: %10.2f\n", "Montant de la TVA", vatAmount);
@@ -179,23 +175,18 @@ public class ConsoleUi {
 
         projectService.updateTotalCost(project.getId(), finalCost);
 
-        System.out.print("Souhaitez-vous enregistrer ce devis ? (y/n) : ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
-            System.out.print("Date d'émission (AAAA-MM-JJ) : ");
-            LocalDate issueDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Date de validité (AAAA-MM-JJ) : ");
-            LocalDate validityDate = LocalDate.parse(scanner.nextLine());
+        if (scanBoolean("Souhaitez-vous enregistrer ce devis ? (y/n): ")) {
+            LocalDate issueDate = scanDate("Date d'émission (AAAA-MM-JJ) : ", ValidationUtils.FUTURE_DATE);
+            LocalDate validityDate = scanDate("Date de validité (AAAA-MM-JJ) : ", ValidationUtils.combine(
+                    ValidationUtils.FUTURE_DATE,
+                    issueDate::isBefore
+            ));
             quoteService.saveQuote(finalCost, issueDate, validityDate, false, project.getId());
             System.out.printf("%50s\n", "Devis enregistré avec succès.");
         }
 
         System.out.printf("%50s\n", "Le projet et toutes ses ressources ont été créés avec succès.");
     }
-
-
-
-
-
 
 
 }

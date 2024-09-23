@@ -4,6 +4,7 @@ import org.wora.entity.Client;
 import org.wora.repository.ClientRepository;
 import org.wora.service.ClientService;
 
+import java.awt.image.RescaleOp;
 import java.util.Optional;
 
 public class ClientServiceImpl implements ClientService {
@@ -27,5 +28,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Optional<Client> getClientById(int id) {
         return Optional.ofNullable(clientRepository.getClientById(id));
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return clientRepository.existsByName(name);
     }
 }
