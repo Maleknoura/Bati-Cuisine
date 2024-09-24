@@ -24,42 +24,56 @@ public class ClientUI {
         System.out.println("1. Chercher un client existant");
         System.out.println("2. Ajouter un nouveau client");
 
-        int option = scanInt("Entrez votre choix", ValidationUtils.POSITIVE_INT);
-        return switch (option) {
-            case 1 -> findExistingClient();
-            case 2 -> createNewClient();
-            default -> Optional.empty();
-        };
+        int option = scanInt("Entrez votre choix :  ", ValidationUtils.POSITIVE_INT);
+        Optional<Client> result;
+
+        switch (option) {
+            case 1:
+                result = findExistingClient();
+                break;
+            case 2:
+                result = createNewClient();
+                break;
+            default:
+                result = Optional.empty();
+                break;
+        }
+
+        return result;
+
     }
 
     private Optional<Client> findExistingClient() {
         String clientName = scanString("Entrez le nom de client: ", ValidationUtils.combine(
                 ValidationUtils.NOT_BLANK,
-                input -> clientService.existsByName(input)
+                input -> clientService.findClientByName(input).isPresent()
         ));
-        Client client = clientService.findClientByName(clientName).get();
+        Optional<Client> clientOpt = clientService.findClientByName(clientName);
+        if (clientOpt.isPresent()) {
+            Client client = clientOpt.get();
+            System.out.println("Client trouvé :");
+            System.out.println("Nom: " + client.getName());
+            System.out.println("Adresse : " + client.getAdress());
+            System.out.println("Numéro de téléphone : " + client.getNumberPhone());
 
-        System.out.println("Client trouvé :");
-        System.out.println("Nom: " + client.getName());
-        System.out.println("Adresse : " + client.getAdress());
-        System.out.println("Numéro de téléphone : " + client.getNumberPhone());
-
-        Boolean choice = scanBoolean("Souhaitez-vous continuer avec ce client ? (y/n) : ");
-        if (choice) {
-            return Optional.of(client);
+            Boolean choice = scanBoolean("Souhaitez-vous continuer avec ce client ? (y/n) : ");
+            if (choice) {
+                return Optional.of(client);
+            }
+            return Optional.empty();
+        }else {
+            throw new RuntimeException("client not found ");
         }
-        return Optional.empty();
     }
 
     private Optional<Client> createNewClient() {
         System.out.println("--- Ajout d'un nouveau client ---");
 
-        String name = scanString("Nom du client: ", ValidationUtils.combine(
-                ValidationUtils.NOT_BLANK,
-                input -> !clientService.existsByName(input)
+        String name = scanString("Nom du client : ", ValidationUtils.combine(
+                ValidationUtils.NOT_BLANK
         ));
-        String address = scanString("Address du client: ", ValidationUtils.NOT_BLANK);
-        String phoneNumber = scanString("Numero phone: ", ValidationUtils.combine(
+        String address = scanString("Address du client : ", ValidationUtils.NOT_BLANK);
+        String phoneNumber = scanString("Numero phone : ", ValidationUtils.combine(
                 ValidationUtils.NOT_BLANK,
                 ValidationUtils.VALID_PHONE
         ));

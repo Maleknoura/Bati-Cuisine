@@ -61,14 +61,14 @@ public class ConsoleUi {
 
         while (true) {
             System.out.println("------- Menu Principal -------");
-            System.out.println("1. Créer un projet");
+            System.out.println("1. Créer un projet ");
             System.out.println("2. Afficher un projet");
             System.out.println("3. calculer un projet");
             System.out.println("4. Supprimer un projet");
             System.out.println("5. Quitter");
-            System.out.print("Choisissez une option : ");
 
-            Integer option = scanInt("Choisissez une option: ", ValidationUtils.POSITIVE_INT);
+
+            Integer option = scanInt("Choisissez une option : ", ValidationUtils.POSITIVE_INT);
 
             switch (option) {
                 case 1:
@@ -107,7 +107,7 @@ public class ConsoleUi {
         System.out.println("--- Création du Projet ---");
 
         project.setName(
-                scanString("ENtrez le nom: ", ValidationUtils.NOT_BLANK)
+                scanString("Entrez le nom : ", ValidationUtils.NOT_BLANK)
         );
         project.setClient(client);
         System.out.println("Client ID associé au projet : " + client.getId());
@@ -115,13 +115,13 @@ public class ConsoleUi {
         projectService.createProject(project);
         System.out.println("Projet créé avec succès. ID du projet : " + project.getId());
 
-        if (scanBoolean("Do you want to add labors: "))
+        if (scanBoolean("est ce que vous voulez ajouter un main d'oeuvre : "))
             laborUI.addLabor(project);
-        if (scanBoolean("Do you want to add materiels"))
+        if (scanBoolean("est ce que vous voulez ajouter un materiel : "))
             materialUI.addMaterial(project);
 
 
-        Boolean applyTva = scanBoolean("Souhaitez-vous appliquer une TVA au project ? (y/n): ");
+        Boolean applyTva = scanBoolean("Souhaitez-vous appliquer une TVA au projet ? (y/n): ");
         double vatPercentage = 0;
         if (applyTva) {
             scanDouble("Entrez le pourcentage de TVA (%): ", ValidationUtils.POSITIVE_DOUBLE);
@@ -132,10 +132,10 @@ public class ConsoleUi {
                 laborService.updateTaxRate(labor.getId(), vatPercentage);
             }
         }
-        Boolean applyMargin = scanBoolean("Do you want to appy profit margin: ");
+        Boolean applyMargin = scanBoolean("est ce que vous voulez appliquer une marge de profit: ");
         Double marginPercentage = 0.0;
         if (applyMargin) {
-            marginPercentage = scanDouble("Please to enter the profit margin : ", ValidationUtils.POSITIVE_DOUBLE);
+            marginPercentage = scanDouble("Veuillez entrer la marge a appliquer : ", ValidationUtils.POSITIVE_DOUBLE);
             projectService.updateProfitMargin(project.getId(), marginPercentage);
         }
         System.out.println("\033[35m==================== Calcul du Coût ====================\033[0m");

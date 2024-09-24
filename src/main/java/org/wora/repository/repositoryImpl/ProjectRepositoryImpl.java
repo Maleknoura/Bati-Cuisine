@@ -340,7 +340,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             e.printStackTrace();
         }
 
-        // Retourne l'objet project dans un Optional, ou Optional.empty() si project est null
         return Optional.ofNullable(project);
     }
 

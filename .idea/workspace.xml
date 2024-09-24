@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Bati-Cuisine:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b19320f0-e52d-4827-8df9-ace9f0019ca7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/ProjectRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ClientRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ClientRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/MaterialRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/MaterialRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ProjectRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/repository/repositoryImpl/ProjectRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/service/serviceImpl/ProjectServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ClientUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ClientUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ConsoleUi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/LaborUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/LaborUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/MaterialUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/MaterialUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/ui/ProjectUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/ui/ProjectUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wora/utilitaire/ValidationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wora/utilitaire/ValidationUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,27 +59,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Maven.Bati-Cuisine [verify].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Bati-Cuisine [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Bati-Cuisine [verify].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Java/jdk-22&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/YCode/Desktop/Bati-Cuisine/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn verify" />
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-22" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="org.wora.Main" />
       <module name="Bati-Cuisine" />
       <extension name="coverage">
